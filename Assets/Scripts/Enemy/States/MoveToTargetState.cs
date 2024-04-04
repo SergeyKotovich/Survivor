@@ -1,5 +1,4 @@
 using System;
-using MessagePipe;
 using UnityEngine;
 using UnityEngine.AI;
 using VContainer;
@@ -8,16 +7,19 @@ public class MoveToTargetState : MonoBehaviour, IState
 {
     [SerializeField] private NavMeshAgent _navMeshAgent;
     [SerializeField] private EnemyAnimationController _animationController;
+    [SerializeField] private float _minDistance = 3f;
+    
+    private ICollision _enemyCollisionHandler;
     private StateMachine _stateMachine;
     private IMovable _target;
     private bool _isActive;
-    private IDisposable _subscriber;
-
+    
     [Inject]
-    public void Construct(IMovable movable, ISubscriber<EnemyDiedMessage> enemyDiedSubscriber)
+    public void Construct(IMovable movable)
     {
         _target = movable;
-        _subscriber = enemyDiedSubscriber.Subscribe(_ =>EnterDeathState());
+        _enemyCollisionHandler = GetComponent<ICollision>();
+        _enemyCollisionHandler.EnemyDied += EnterDeathState;
     }
     public void Initialize(StateMachine stateMachine)
     {
@@ -35,15 +37,21 @@ public class MoveToTargetState : MonoBehaviour, IState
         if (_isActive)
         {
             _navMeshAgent.destination = _target.Position;
-            if (Vector3.Distance(transform.position,_target.Position)<3f)
+            if (Vector3.Distance(transform.position,_target.Position)<_minDistance)
             {
                 _stateMachine.Enter<AttackState>();
+                return;
             }
 
-            if (Vector3.Distance(transform.position,_target.Position)>3f)
+            if (Vector3.Distance(transform.position,_target.Position)>_minDistance)
             {
                 _animationController.ShowWalking();
             }
+        }
+
+        if (!_isActive)
+        {
+            _navMeshAgent.destination = transform.position;
         }
     }
 
@@ -55,6 +63,6 @@ public class MoveToTargetState : MonoBehaviour, IState
 
     private void OnDestroy()
     {
-        _subscriber.Dispose();
+        _enemyCollisionHandler.EnemyDied += EnterDeathState;
     }
 }

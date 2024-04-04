@@ -12,14 +12,19 @@ public class EnemiesController : MonoBehaviour, IEnemiesController
     private EnemySpawner _enemySpawner;
 
     [Inject]
-    public void Construct(ISubscriber<EnemySpawnedMessage> enemySpawnedSubscriber)
+    public void Construct(ISubscriber<EnemySpawnedMessage> enemySpawnedSubscriber, ISubscriber<EnemyDiedMessage> enemyDiedSubscriber)
     {
-        _subscription = enemySpawnedSubscriber.Subscribe(AddEnemy);;
+        _subscription = DisposableBag.Create(enemySpawnedSubscriber.Subscribe(AddEnemy), enemyDiedSubscriber.Subscribe(RemoveEnemy)) ;
     }
     
     private void AddEnemy(EnemySpawnedMessage enemySpawnedMessage)
     {
         AliveEnemies.Add(enemySpawnedMessage.Enemy);
+    }
+
+    private void RemoveEnemy(EnemyDiedMessage enemyDiedMessage)
+    {
+        AliveEnemies.Remove(enemyDiedMessage.Enemy);
     }
     public bool HasAliveEnemies()
     {

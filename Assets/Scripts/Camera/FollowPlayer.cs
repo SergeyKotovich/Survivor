@@ -1,10 +1,10 @@
-using System;
 using UnityEngine;
 using VContainer;
 
-public class Camera : MonoBehaviour
+public class FollowPlayer : MonoBehaviour
 {
    [SerializeField] private Vector3 _offset;
+   private int _currentIndex;
 
    private IMovable _movable;
 
@@ -13,9 +13,9 @@ public class Camera : MonoBehaviour
    {
       _movable = movable;
    }
-
    private void LateUpdate()
    {
-      transform.position = _movable.Position+_offset;
+      transform.localPosition = _movable.Position + _offset;
    }
 }
+

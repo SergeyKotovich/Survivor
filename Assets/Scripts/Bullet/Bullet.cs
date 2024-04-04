@@ -5,7 +5,7 @@ public class Bullet : MonoBehaviour
 {
     public event Action<Bullet> BulletHit; 
     public Rigidbody Rigidbody { get; private set; }
-    public int Speed { get; private set; } = 250;
+    public int Speed { get; private set; } = 50;
     private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
@@ -13,6 +13,7 @@ public class Bullet : MonoBehaviour
     
     private void OnCollisionEnter(Collision collision)
     {
+        
         Rigidbody.useGravity = true;
         BulletHit?.Invoke(this);
         

@@ -7,12 +7,7 @@ public class Enemy : MonoBehaviour
     private int _speed;
     private int _damage;
 
-    private Rigidbody _rigidbody;
-    private void Awake()
-    {
-        _rigidbody = GetComponent<Rigidbody>();
-    }
-
+    
     private void Start()
     {
         var stateMachine = new StateMachine

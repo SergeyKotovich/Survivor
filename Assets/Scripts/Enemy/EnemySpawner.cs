@@ -18,10 +18,9 @@ public class EnemySpawner : MonoBehaviour
     {
         _enemySpawnedPublisher = enemySpawnedPublisher;
         _enemyFactory = enemyFactory;
-        SpawnEnemies();
     }
 
-    private async UniTask SpawnEnemies()
+    public async UniTask SpawnEnemies()
     {
         foreach (var spawnParameters in _spawnParameters)
         {

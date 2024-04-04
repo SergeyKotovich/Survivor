@@ -1,11 +1,14 @@
+using System;
 using MessagePipe;
+using Unity.VisualScripting;
 using UnityEngine;
 using VContainer;
 
-public class EnemyCollisionHandler : MonoBehaviour
+public class EnemyCollisionHandler : MonoBehaviour, ICollision
 {
     private IPublisher<EnemyDiedMessage> _enemyDiedPublisher;
-
+    public event Action EnemyDied;
+    
     [Inject]
     public void Construct(IPublisher<EnemyDiedMessage> enemyDiedPublisher)
     {
@@ -13,9 +16,12 @@ public class EnemyCollisionHandler : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+        
+        var enemy = GetComponent<Enemy>();
         if (collision.collider.CompareTag(GlobalConstants.BULLET_TAG))
         {
-           _enemyDiedPublisher.Publish(new EnemyDiedMessage());
+            EnemyDied?.Invoke();
+            _enemyDiedPublisher.Publish(new EnemyDiedMessage(enemy));
         }
     }
 }

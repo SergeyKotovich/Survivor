@@ -1,60 +1,71 @@
-using System.Collections.Generic;
+using System;
 using System.Linq;
+using MessagePipe;
 using UnityEngine;
 using VContainer;
 
 public class PlayerTargetController : MonoBehaviour
 {
-    private int _minDistance = 10;
-    private IEnemiesController _enemiesController;
+    public Enemy NearestEnemy { get; private set; }
     
-    private float _currentTime;
-    public float _shootingTime = 2f;
+    private IEnemiesController _enemiesController;
+    private float _minDistance = 10f;
+    private IPublisher<EnemyIsNearbyMessage> _enemyIsNearbyPublisher;
+    private IDisposable _subscriber;
 
     [Inject] 
-    public void Construct(IEnemiesController enemiesController)
+    public void Construct(IEnemiesController enemiesController, IPublisher<EnemyIsNearbyMessage> enemyIsNearbyPublisher, ISubscriber<EnemyDiedMessage> enemyDiedSubscriber)
     {
+        _enemyIsNearbyPublisher = enemyIsNearbyPublisher;
         _enemiesController = enemiesController;
+        _subscriber = enemyDiedSubscriber.Subscribe(_=>OnNearestEnemyDied());
     }
 
-
-    public void Update()
+    private void Update()
     {
         if (!_enemiesController.HasAliveEnemies())
         {
+            _enemyIsNearbyPublisher.Publish(new EnemyIsNearbyMessage(false));
             return;
         }
-        
-        var nearestEnemy = FindNearestEnemy();
-
-        transform.LookAt(nearestEnemy.transform.position);
-        _currentTime += Time.deltaTime;
-         if (_currentTime>=_shootingTime)
-         {
-             if (Vector3.Distance(transform.position, nearestEnemy.transform.position)<=_minDistance)
-             {
-                 var direction = (nearestEnemy.transform.position - transform.position);
-                // _weapon.Shoot(direction);
-                 _currentTime = 0;
-             }
-         }
+        FindNearestEnemy();
+        if (NearestEnemy!=null)
+        {
+            if (Vector3.Distance(transform.position,NearestEnemy.transform.position)<_minDistance)
+            {
+                _enemyIsNearbyPublisher.Publish(new EnemyIsNearbyMessage(true));
+                transform.LookAt(NearestEnemy.transform.position);
+            }
+            else
+            {
+                _enemyIsNearbyPublisher.Publish(new EnemyIsNearbyMessage(false));
+            }
+        }
     }
 
-    private Enemy FindNearestEnemy()
+    private void FindNearestEnemy()
     {
-        var nearestEnemy = _enemiesController.AliveEnemies.First();
+        NearestEnemy = _enemiesController.AliveEnemies.First();
        
-        var minDistance = Vector3.Distance(transform.position, nearestEnemy.transform.position);
+        var minDistance = Vector3.Distance(transform.position, NearestEnemy.transform.position);
         foreach (var enemy in _enemiesController.AliveEnemies)
         {
             var distanceToCurrentEnemy = Vector3.Distance(transform.position, enemy.transform.position);
             if (distanceToCurrentEnemy < minDistance)
             {
-                nearestEnemy = enemy;
+                NearestEnemy = enemy;
                 minDistance = distanceToCurrentEnemy;
             }
         }
+    }
 
-        return nearestEnemy;
+    public bool HasTarget()
+    {
+        return NearestEnemy != null;
+    }
+
+    private void OnNearestEnemyDied()
+    {
+        NearestEnemy = null;
     }
 }

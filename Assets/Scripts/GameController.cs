@@ -2,8 +2,15 @@ using VContainer.Unity;
 
 public class GameController : IStartable
 {
-    public void Start()
+    private EnemySpawner _enemySpawner;
+
+    public GameController(EnemySpawner enemySpawner)
     {
-        
+        _enemySpawner = enemySpawner;
+    }
+
+    public async void Start()
+    {
+       await _enemySpawner.SpawnEnemies();
     }
 }

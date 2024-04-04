@@ -9,15 +9,13 @@ public class GameLifetimeScope : LifetimeScope
     [SerializeField] private PlayerController _playerController;
     [SerializeField] private EnemySpawner _enemySpawner;
     [SerializeField] private EnemiesController _enemiesController;
-    [SerializeField] private Weapon _weapon;
-    
+
     protected override void Configure(IContainerBuilder builder)
     {
         RegisterInput(builder);
         
         builder.Register<EnemyFactory>(Lifetime.Singleton);
         
-        builder.RegisterInstance(_weapon).AsImplementedInterfaces();
         builder.RegisterInstance(_enemiesController).AsImplementedInterfaces();
         builder.RegisterInstance(_enemySpawner);
         builder.RegisterInstance(_playerController).AsImplementedInterfaces();
@@ -33,6 +31,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterBuildCallback(c=>GlobalMessagePipe.SetProvider(c.AsServiceProvider()));
         builder.RegisterMessageBroker<EnemySpawnedMessage>(options);
         builder.RegisterMessageBroker<EnemyDiedMessage>(options);
+        builder.RegisterMessageBroker<EnemyIsNearbyMessage>(options);
     }
 
     private void RegisterInput(IContainerBuilder builder)
