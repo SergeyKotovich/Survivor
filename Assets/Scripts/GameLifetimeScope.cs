@@ -15,6 +15,7 @@ public class GameLifetimeScope : LifetimeScope
         RegisterInput(builder);
         
         builder.Register<EnemyFactory>(Lifetime.Singleton);
+        builder.Register<Wallet>(Lifetime.Singleton);
         
         builder.RegisterInstance(_enemiesController).AsImplementedInterfaces();
         builder.RegisterInstance(_enemySpawner);
