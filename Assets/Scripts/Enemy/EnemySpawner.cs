@@ -13,12 +13,15 @@ public class EnemySpawner : MonoBehaviour
     
     private EnemyFactory _enemyFactory;
     private IPublisher<EnemySpawnedMessage> _enemySpawnedPublisher;
+    private IDisposable _subscriber;
+    private bool _playerAlive = true;
 
     [Inject]
-    public void Construct (EnemyFactory enemyFactory , IPublisher<EnemySpawnedMessage> enemySpawnedPublisher)
+    public void Construct (EnemyFactory enemyFactory , IPublisher<EnemySpawnedMessage> enemySpawnedPublisher, ISubscriber<PlayerDiedMessage> playerDiedSubscriber)
     {
         _enemySpawnedPublisher = enemySpawnedPublisher;
         _enemyFactory = enemyFactory;
+        _subscriber = playerDiedSubscriber.Subscribe( _ =>_playerAlive= false);
     }
 
     public async UniTask SpawnEnemies()
@@ -27,14 +30,23 @@ public class EnemySpawner : MonoBehaviour
         {
             for (int i = 0; i < spawnParameters.CountEnemy; i++)
             {
-                var randomVector = Random.insideUnitSphere;
-                randomVector.y = 0;
-                var position = spawnParameters.Point.position + spawnParameters.Radius * randomVector;
-                await UniTask.Delay(_delayBetweenSpawn);
-                var enemy = _enemyFactory.GetEnemy(spawnParameters.EnemyConfig, position);
-                _enemySpawnedPublisher.Publish(new EnemySpawnedMessage(enemy));
+                if (_playerAlive)
+                {
+                    var randomVector = Random.insideUnitSphere;
+                    randomVector.y = 0;
+                    var position = spawnParameters.Point.position + spawnParameters.Radius * randomVector;
+                    await UniTask.Delay(_delayBetweenSpawn);
+                    var enemy = _enemyFactory.GetEnemy(spawnParameters.EnemyConfig, position);
+                    _enemySpawnedPublisher.Publish(new EnemySpawnedMessage(enemy));
+                }
+                
             }
             
         }
+    }
+
+    private void OnDestroy()
+    {
+        _subscriber.Dispose();
     }
 }

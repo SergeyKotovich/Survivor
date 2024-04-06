@@ -14,6 +14,11 @@ public class EnemyTargetController : MonoBehaviour
     
     private IMovable _target;
     
+    public void Initialize(float speed)
+    {
+        _navMeshAgent.speed = speed;
+    }
+
     private void Update()
     {
         if (_target!=null)
@@ -46,5 +51,6 @@ public class EnemyTargetController : MonoBehaviour
     {
         _navMeshAgent.isStopped = true;
     }
+
    
 }

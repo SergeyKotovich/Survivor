@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: EnemyConfig
   m_EditorClassIdentifier: 
   <EnemyPrefab>k__BackingField: {fileID: -1263845689675210964, guid: ee4bb103390ea924d8e75b6681eb7bc4, type: 3}
-  <Speed>k__BackingField: 4
+  <Speed>k__BackingField: 3.5
   <Damage>k__BackingField: 10
   <Health>k__BackingField: 100

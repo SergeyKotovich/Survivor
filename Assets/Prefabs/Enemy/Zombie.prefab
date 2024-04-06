@@ -1118,6 +1118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyAttackController: {fileID: 480058463454935930}
   _enemyCollisionHandler: {fileID: -499146956318542846}
+  _enemyTargetController: {fileID: 528328526273771204}
 --- !u!195 &-6135547170526384558
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -50,11 +50,11 @@ public class PlayerController : MonoBehaviour, IMovable
     {
         _playerDiedPublisher.Publish(new PlayerDiedMessage());
         _playerAnimationController.PlayDeathAnimation();
+        _shootingController.CanShoot -= Shoot;
     }
 
     private void OnDestroy()
     {
         _healthController.Died -= OnPlayerDied;
-        _shootingController.CanShoot -= Shoot;
     }
 }

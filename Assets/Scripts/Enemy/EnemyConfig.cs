@@ -5,7 +5,7 @@ public class EnemyConfig : ScriptableObject
 {
     [field: SerializeField] public Enemy EnemyPrefab { get; private set; }
     
-    [field: SerializeField] public int Speed { get; private set; }
+    [field: SerializeField] public float Speed { get; private set; }
     
     [field: SerializeField] public int Damage { get; private set; }
     

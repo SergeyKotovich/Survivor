@@ -7,6 +7,8 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private EnemyAttackController _enemyAttackController;
     [SerializeField] private EnemyCollisionHandler _enemyCollisionHandler;
+    [SerializeField] private EnemyTargetController _enemyTargetController;
+    
     private HealthController _healthController;
     private StateMachine _stateMachine;
     private IPublisher<EnemyDiedMessage> _enemyDiedPublisher;
@@ -35,6 +37,7 @@ public class Enemy : MonoBehaviour
         _enemyCollisionHandler.DamageReceived += TakeDamage;
         _healthController.Died += EnterDeathState;
         _enemyAttackController.Initialize(enemyConfig.Damage);
+        _enemyTargetController.Initialize(enemyConfig.Speed);
     }
 
     private void TakeDamage(float damage)

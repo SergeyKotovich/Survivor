@@ -6,7 +6,7 @@ using UnityEngine.Pool;
 using VContainer;
 using VContainer.Unity;
 
-public class EnemyFactory : IDisposable
+public class EnemyFactory 
 {
     private IObjectResolver _objectResolver;
     private IDisposable _subscriber;
@@ -51,10 +51,7 @@ public class EnemyFactory : IDisposable
     {
         await UniTask.Delay(3000);
         _enemyPool.Release(enemyDiedMessage.Enemy);
-    }
-
-    public void Dispose()
-    {
         _subscriber.Dispose();
     }
+    
 }
