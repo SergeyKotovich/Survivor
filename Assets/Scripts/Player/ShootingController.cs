@@ -4,43 +4,35 @@ using VContainer;
 
 public class ShootingController : MonoBehaviour
 {
+    public event Action CanShoot;
+    
     private float _minDistance = 8;
     private float _shootingTime = 1f;
     private float _currentTime;
     
-    private ITarget _target;
-    private IWeapon _weapon;
-
-    private void Awake()
+    private ITarget _targetController;
+    
+    public void Initialize(ITarget targetController)
     {
-        _weapon = GetComponent<IWeapon>();
-    }
-
-    [Inject] 
-    public void Construct(ITarget target )
-    {
-        _target = target;
+        _targetController = targetController;
     }
     public void Update()
     {
         _currentTime += Time.deltaTime;
        
-        if (!_target.HasTarget())
+        if (!_targetController.HasTarget())
         {
             return;
         }
-        var nearestEnemy = _target.GetTarget();
+        var nearestEnemy = _targetController.GetTarget();
         if (Vector3.Distance(transform.position, nearestEnemy.transform.position)>_minDistance)
         {
             return;
         }
         if (_currentTime>=_shootingTime)
         {
-            _weapon.Shoot();
+            CanShoot?.Invoke();
             _currentTime = 0;
         }
-
-
     }
-
 }

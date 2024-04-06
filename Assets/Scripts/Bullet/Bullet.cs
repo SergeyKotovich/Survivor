@@ -1,11 +1,13 @@
 using System;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : MonoBehaviour, IBullet
 {
     public event Action<Bullet> BulletHit; 
     public Rigidbody Rigidbody { get; private set; }
-    public int Speed { get; private set; } = 50;
+    public int Speed => 50;
+    public float Damage { get; private set; }
+
     private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
@@ -16,6 +18,10 @@ public class Bullet : MonoBehaviour
         
         Rigidbody.useGravity = true;
         BulletHit?.Invoke(this);
-        
+    }
+
+    public void SetDamage(float damage)
+    {
+        Damage = damage;
     }
 }

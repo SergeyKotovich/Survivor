@@ -1,68 +1,50 @@
 using System;
+using MessagePipe;
 using UnityEngine;
 using UnityEngine.AI;
 using VContainer;
 
 public class MoveToTargetState : MonoBehaviour, IState
 {
-    [SerializeField] private NavMeshAgent _navMeshAgent;
+    [SerializeField] private EnemyTargetController _enemyTargetController;
     [SerializeField] private EnemyAnimationController _animationController;
-    [SerializeField] private float _minDistance = 3f;
     
-    private ICollision _enemyCollisionHandler;
     private StateMachine _stateMachine;
     private IMovable _target;
-    private bool _isActive;
-    
+    private IDisposable _subscriber;
+
     [Inject]
-    public void Construct(IMovable movable)
+    public void Construct(IMovable target, ISubscriber<PlayerDiedMessage> playerDiedSubscriber)
     {
-        _target = movable;
-        _enemyCollisionHandler = GetComponent<ICollision>();
-        _enemyCollisionHandler.EnemyDied += EnterDeathState;
+        _target = target;
+        _subscriber = playerDiedSubscriber.Subscribe(_ => EnterWaitingState());
     }
     public void Initialize(StateMachine stateMachine)
     {
         _stateMachine = stateMachine;
+        _enemyTargetController.TargetNearby += EnterAttackState;
     }
 
     public void OnEnter()
     {
+        _enemyTargetController.SetTarget(_target);
         _animationController.ShowWalking();
-        _isActive = true;
     }
-
-    private void Update()
+    
+    private void EnterAttackState()
     {
-        if (_isActive)
-        {
-            _navMeshAgent.destination = _target.Position;
-            if (Vector3.Distance(transform.position,_target.Position)<_minDistance)
-            {
-                _stateMachine.Enter<AttackState>();
-                return;
-            }
-
-            if (Vector3.Distance(transform.position,_target.Position)>_minDistance)
-            {
-                _animationController.ShowWalking();
-            }
-        }
-
-        if (!_isActive)
-        {
-            _navMeshAgent.destination = transform.position;
-        }
+        _stateMachine.Enter<AttackState>();
     }
-
-    private void EnterDeathState()
+    
+    private void EnterWaitingState()
     {
-        _isActive = false;
-        _stateMachine.Enter<DeathState>();
+        _enemyTargetController.ResetTarget();
+        _stateMachine.Enter<WaitingState>();
     }
 
     private void OnDestroy()
     {
-        _enemyCollisionHandler.EnemyDied += EnterDeathState;
+        _enemyTargetController.TargetNearby -= EnterAttackState;
+        _subscriber.Dispose();
     }
 }

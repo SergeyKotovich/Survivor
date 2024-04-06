@@ -3,25 +3,37 @@ using MessagePipe;
 using UnityEngine;
 using VContainer;
 
-public class MovementController : MonoBehaviour
+public class PlayerMovementController : MonoBehaviour
 {
     [SerializeField] private PlayerAnimationController _animationController;
     [SerializeField] private CharacterController _characterController;
-
-    [SerializeField] private float _speed;
+    
+    private float _speed;
     
     private IInputHandler _inputHandler;
 
+    private bool isPlayerAlive = true;
+
+    private IDisposable _subscriber;
+
     [Inject]
-    public void Construct(IInputHandler inputHandler)
+    public void Construct(IInputHandler inputHandler, ISubscriber<PlayerDiedMessage> playerDiedSubscriber )
     {
         _inputHandler = inputHandler;
-        
+        _subscriber = playerDiedSubscriber.Subscribe(_ => isPlayerAlive = false);
+    }
+
+    public void Initialize(float speed)
+    {
+        _speed = speed;
     }
 
     private void Update()
     {
-        Move();
+        if (isPlayerAlive)
+        {
+            Move(); 
+        }
     }
 
     private void Move()
@@ -41,5 +53,10 @@ public class MovementController : MonoBehaviour
             _animationController.StopIdleAnimation();
             _animationController.PlayRunningAnimation();
         }
+    }
+
+    private void OnDestroy()
+    {
+        _subscriber.Dispose();
     }
 }

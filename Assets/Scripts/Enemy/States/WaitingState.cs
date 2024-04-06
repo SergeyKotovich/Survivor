@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class WaitingState : MonoBehaviour, IState
 {
+    [SerializeField] private EnemyAnimationController _animationController;
+    
     private StateMachine _stateMachine;
     
-
     public void Initialize(StateMachine stateMachine)
     {
         _stateMachine = stateMachine;
@@ -13,13 +14,7 @@ public class WaitingState : MonoBehaviour, IState
 
     public void OnEnter()
     {
-        Waiting();
-        
+        _animationController.ShowIdle();
     }
-
-    private async UniTask Waiting()
-    {
-        await UniTask.Delay(1);
-        _stateMachine.Enter<MoveToTargetState>();
-    }
+    
 }

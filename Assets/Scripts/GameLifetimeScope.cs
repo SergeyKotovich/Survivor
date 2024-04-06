@@ -9,7 +9,7 @@ public class GameLifetimeScope : LifetimeScope
     [SerializeField] private PlayerController _playerController;
     [SerializeField] private EnemySpawner _enemySpawner;
     [SerializeField] private EnemiesController _enemiesController;
-
+    
     protected override void Configure(IContainerBuilder builder)
     {
         RegisterInput(builder);
@@ -19,7 +19,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterInstance(_enemiesController).AsImplementedInterfaces();
         builder.RegisterInstance(_enemySpawner);
         builder.RegisterInstance(_playerController).AsImplementedInterfaces();
-        
+
         builder.RegisterEntryPoint<GameController>();
         
         RegisterMessagePipe(builder);
@@ -32,6 +32,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterMessageBroker<EnemySpawnedMessage>(options);
         builder.RegisterMessageBroker<EnemyDiedMessage>(options);
         builder.RegisterMessageBroker<EnemyIsNearbyMessage>(options);
+        builder.RegisterMessageBroker<PlayerDiedMessage>(options);
     }
 
     private void RegisterInput(IContainerBuilder builder)

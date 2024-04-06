@@ -5,8 +5,7 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] private Animator _animator;
     private static readonly int _running = Animator.StringToHash("running");
     private static readonly int _idle = Animator.StringToHash("idle");
-    
-
+    private static readonly int _death = Animator.StringToHash("death");
 
     public void PlayRunningAnimation()
     {
@@ -26,6 +25,11 @@ public class PlayerAnimationController : MonoBehaviour
     public void StopIdleAnimation()
     {
         _animator.SetBool(_idle,false);
+    }
+
+    public void PlayDeathAnimation()
+    {
+        _animator.SetTrigger(_death);
     }
 
     

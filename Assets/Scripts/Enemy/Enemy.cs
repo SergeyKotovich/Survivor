@@ -1,29 +1,50 @@
 using System;
+using MessagePipe;
 using UnityEngine;
+using VContainer;
 
 public class Enemy : MonoBehaviour
 {
-    private int _heath;
-    private int _speed;
-    private int _damage;
+    [SerializeField] private EnemyAttackController _enemyAttackController;
+    [SerializeField] private EnemyCollisionHandler _enemyCollisionHandler;
+    private HealthController _healthController;
+    private StateMachine _stateMachine;
+    private IPublisher<EnemyDiedMessage> _enemyDiedPublisher;
 
-    
+    [Inject]
+    private void Construct(IPublisher<EnemyDiedMessage> enemyDiedPublisher)
+    {
+        _enemyDiedPublisher = enemyDiedPublisher;
+    }
+
     private void Start()
     {
-        var stateMachine = new StateMachine
+        _stateMachine = new StateMachine
         (
             GetComponent<WaitingState>(),
             GetComponent<MoveToTargetState>(),
             GetComponent<AttackState>(),
             GetComponent<DeathState>()
         );
-        stateMachine.Initialize();
-        stateMachine.Enter<WaitingState>();
+        _stateMachine.Initialize();
+        _stateMachine.Enter<MoveToTargetState>();
     }
     public void Initialize(EnemyConfig enemyConfig)
     {
-        _heath = enemyConfig.Health;
-        _speed = enemyConfig.Speed;
-        _damage = enemyConfig.Damage;
+        _healthController = new HealthController(enemyConfig.Health);
+        _enemyCollisionHandler.DamageReceived += TakeDamage;
+        _healthController.Died += EnterDeathState;
+        _enemyAttackController.Initialize(enemyConfig.Damage);
+    }
+
+    private void TakeDamage(float damage)
+    {
+        _healthController.TakeDamage(damage);
+    }
+
+    private void EnterDeathState()
+    {
+        _enemyDiedPublisher.Publish(new EnemyDiedMessage(this));
+        _stateMachine.Enter<DeathState>();
     }
 }

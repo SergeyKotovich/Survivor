@@ -9,6 +9,7 @@ using Random = UnityEngine.Random;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private SpawnParameters[] _spawnParameters;
+    [SerializeField] private int _delayBetweenSpawn;
     
     private EnemyFactory _enemyFactory;
     private IPublisher<EnemySpawnedMessage> _enemySpawnedPublisher;
@@ -29,8 +30,8 @@ public class EnemySpawner : MonoBehaviour
                 var randomVector = Random.insideUnitSphere;
                 randomVector.y = 0;
                 var position = spawnParameters.Point.position + spawnParameters.Radius * randomVector;
-                await UniTask.Delay(1000);
-                var enemy = _enemyFactory.CreateEnemy(spawnParameters.EnemyConfig, position);
+                await UniTask.Delay(_delayBetweenSpawn);
+                var enemy = _enemyFactory.GetEnemy(spawnParameters.EnemyConfig, position);
                 _enemySpawnedPublisher.Publish(new EnemySpawnedMessage(enemy));
             }
             

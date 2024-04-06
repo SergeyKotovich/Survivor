@@ -1004,9 +1004,10 @@ GameObject:
   - component: {fileID: 2300464709189272244}
   - component: {fileID: 2018878268954748265}
   - component: {fileID: -499146956318542846}
+  - component: {fileID: 528328526273771204}
   m_Layer: 0
   m_Name: Zombie
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1075,6 +1076,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animationController: {fileID: -4640155161052234977}
+  _enemyTargetController: {fileID: 528328526273771204}
 --- !u!114 &3574234783684040620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1087,9 +1089,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d1c2c373264ef4ae1023b2f6c20f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _navMeshAgent: {fileID: -6135547170526384558}
+  _enemyTargetController: {fileID: 528328526273771204}
   _animationController: {fileID: -4640155161052234977}
-  _minDistance: 3
 --- !u!114 &-6405540046285472621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1102,6 +1103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ed535630dc5a4441ba19f89846349e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animationController: {fileID: -4640155161052234977}
 --- !u!114 &-1263845689675210964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1114,6 +1116,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d64941f4c95b93468fa8eb0711ee2fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyAttackController: {fileID: 480058463454935930}
+  _enemyCollisionHandler: {fileID: -499146956318542846}
 --- !u!195 &-6135547170526384558
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1128,7 +1132,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 2
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1177,6 +1181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animationController: {fileID: -4640155161052234977}
+  _enemyTargetController: {fileID: 528328526273771204}
 --- !u!114 &-499146956318542846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1189,6 +1194,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04996b47625744198cf3e067528235a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &528328526273771204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6448420678724550562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cca07dd2243499c9e1cf6587bd6fa46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _navMeshAgent: {fileID: -6135547170526384558}
+  _minDistance: 1
 --- !u!1 &6448420678724550566
 GameObject:
   m_ObjectHideFlags: 0
@@ -1230,6 +1249,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6448420678724969420}
+  - component: {fileID: 215925382019138676}
+  - component: {fileID: 480058463454935930}
   m_Layer: 0
   m_Name: R_hand_container
   m_TagString: Untagged
@@ -1252,3 +1273,28 @@ Transform:
   m_Father: {fileID: 6448420678724969030}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &215925382019138676
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6448420678724550572}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.1, z: 0.1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &480058463454935930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6448420678724550572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4118df154de4a05a62ab029a8aaf2a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
