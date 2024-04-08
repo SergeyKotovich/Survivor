@@ -9,7 +9,7 @@ public class EnemiesController : MonoBehaviour, IEnemiesController
     public List<Enemy> AliveEnemies { get; } = new();
     
     private IDisposable _subscription;
-    private EnemySpawner _enemySpawner;
+    private EnemiesSpawner _enemiesSpawner;
 
     [Inject]
     public void Construct(ISubscriber<EnemySpawnedMessage> enemySpawnedSubscriber, ISubscriber<EnemyDiedMessage> enemyDiedSubscriber)

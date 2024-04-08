@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
 using UnityEngine;
@@ -6,10 +7,11 @@ using UnityEngine.Pool;
 using VContainer;
 using VContainer.Unity;
 
-public class EnemyFactory 
+public class EnemyFactory : IDisposable
 {
     private IObjectResolver _objectResolver;
     private IDisposable _subscriber;
+    
     private ObjectPool<Enemy> _enemyPool;
     private EnemyConfig _enemyConfig;
     private Vector3 _position;
@@ -17,7 +19,7 @@ public class EnemyFactory
     public EnemyFactory(IObjectResolver objectResolver, ISubscriber<EnemyDiedMessage> enemyDiedSubscriber)
     {
         _objectResolver = objectResolver;
-        _subscriber = enemyDiedSubscriber.Subscribe(enemyDiedMessage => OnEnemyDied(enemyDiedMessage));
+        _subscriber =  enemyDiedSubscriber.Subscribe(enemyDiedMessage => OnEnemyDied(enemyDiedMessage));
         _enemyPool = new ObjectPool<Enemy>(Create, Get, Release);
     }
 
@@ -45,13 +47,18 @@ public class EnemyFactory
         enemy.gameObject.SetActive(false);
         enemy.transform.position = Vector3.zero;
         enemy.transform.rotation = Quaternion.identity;
+        
     }
 
     private async UniTask OnEnemyDied(EnemyDiedMessage enemyDiedMessage)
     {
-        await UniTask.Delay(3000);
+        await UniTask.Delay(_enemyConfig.DelayAfterDeath);
         _enemyPool.Release(enemyDiedMessage.Enemy);
+    }
+
+
+    public void Dispose()
+    {
         _subscriber.Dispose();
     }
-    
 }

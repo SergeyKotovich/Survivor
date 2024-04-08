@@ -7,8 +7,9 @@ public class GameLifetimeScope : LifetimeScope
 {
     [SerializeField] private bl_Joystick _blJoystick;
     [SerializeField] private PlayerController _playerController;
-    [SerializeField] private EnemySpawner _enemySpawner;
+    [SerializeField] private EnemiesSpawner _enemiesSpawner;
     [SerializeField] private EnemiesController _enemiesController;
+    [SerializeField] private UIController _uiController;
     
     protected override void Configure(IContainerBuilder builder)
     {
@@ -16,10 +17,12 @@ public class GameLifetimeScope : LifetimeScope
         
         builder.Register<EnemyFactory>(Lifetime.Singleton);
         builder.Register<Wallet>(Lifetime.Singleton);
+        builder.Register<MoneyConverter>(Lifetime.Singleton);
         
         builder.RegisterInstance(_enemiesController).AsImplementedInterfaces();
-        builder.RegisterInstance(_enemySpawner);
+        builder.RegisterInstance(_enemiesSpawner);
         builder.RegisterInstance(_playerController).AsImplementedInterfaces();
+        builder.RegisterInstance(_uiController);
 
         builder.RegisterEntryPoint<GameController>();
         
@@ -34,6 +37,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterMessageBroker<EnemyDiedMessage>(options);
         builder.RegisterMessageBroker<EnemyIsNearbyMessage>(options);
         builder.RegisterMessageBroker<PlayerDiedMessage>(options);
+        builder.RegisterMessageBroker<CountMoneyChangedMessage>(options);
     }
 
     private void RegisterInput(IContainerBuilder builder)
