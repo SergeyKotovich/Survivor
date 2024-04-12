@@ -10,19 +10,20 @@ public class GameLifetimeScope : LifetimeScope
     [SerializeField] private EnemiesSpawner _enemiesSpawner;
     [SerializeField] private EnemiesController _enemiesController;
     [SerializeField] private UIController _uiController;
-    
+    [SerializeField] private WavesController _wavesController;
+
     protected override void Configure(IContainerBuilder builder)
     {
         RegisterInput(builder);
         
         builder.Register<EnemyFactory>(Lifetime.Singleton);
         builder.Register<Wallet>(Lifetime.Singleton);
-        builder.Register<MoneyConverter>(Lifetime.Singleton);
-        
+
         builder.RegisterInstance(_enemiesController).AsImplementedInterfaces();
         builder.RegisterInstance(_enemiesSpawner);
         builder.RegisterInstance(_playerController).AsImplementedInterfaces();
         builder.RegisterInstance(_uiController);
+        builder.RegisterInstance(_wavesController);
 
         builder.RegisterEntryPoint<GameController>();
         
@@ -33,11 +34,18 @@ public class GameLifetimeScope : LifetimeScope
     {
         var options = builder.RegisterMessagePipe();
         builder.RegisterBuildCallback(c=>GlobalMessagePipe.SetProvider(c.AsServiceProvider()));
+        
         builder.RegisterMessageBroker<EnemySpawnedMessage>(options);
         builder.RegisterMessageBroker<EnemyDiedMessage>(options);
         builder.RegisterMessageBroker<EnemyIsNearbyMessage>(options);
-        builder.RegisterMessageBroker<PlayerDiedMessage>(options);
+        builder.RegisterMessageBroker<AllEnemiesSpawnedMessage>(options);
+        builder.RegisterMessageBroker<AllEnemiesDiedMessage>(options);
+        
+        builder.RegisterMessageBroker<BreakHasStartedMessage>(options);
         builder.RegisterMessageBroker<CountMoneyChangedMessage>(options);
+        
+        builder.RegisterMessageBroker<UpgradePurchasedMessage>(options);
+        builder.RegisterMessageBroker<PlayerDiedMessage>(options);
     }
 
     private void RegisterInput(IContainerBuilder builder)

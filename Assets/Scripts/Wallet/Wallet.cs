@@ -1,5 +1,6 @@
 using System;
 using MessagePipe;
+using UnityEngine;
 
 public class Wallet : IDisposable
 {
@@ -15,6 +16,18 @@ public class Wallet : IDisposable
     {
         _currentCountMoney += countMoneyChanged.Money;
         CountMoneyChanged?.Invoke(_currentCountMoney);
+    }
+
+    public bool TryBuy(float price)
+    {
+        if (_currentCountMoney>=price)
+        {
+            _currentCountMoney -= price;
+            CountMoneyChanged?.Invoke(_currentCountMoney);
+            return true;
+        }
+        Debug.Log("Недостаточно денег");
+        return false;
     }
 
     public void Dispose()

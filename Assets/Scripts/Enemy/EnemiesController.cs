@@ -8,13 +8,19 @@ public class EnemiesController : MonoBehaviour, IEnemiesController
 {
     public List<Enemy> AliveEnemies { get; } = new();
     
-    private IDisposable _subscription;
+    private IDisposable _subscribers;
     private EnemiesSpawner _enemiesSpawner;
 
     [Inject]
-    public void Construct(ISubscriber<EnemySpawnedMessage> enemySpawnedSubscriber, ISubscriber<EnemyDiedMessage> enemyDiedSubscriber)
+    public void Construct(ISubscriber<EnemySpawnedMessage> enemySpawnedSubscriber,
+        ISubscriber<EnemyDiedMessage> enemyDiedSubscriber)
     {
-        _subscription = DisposableBag.Create(enemySpawnedSubscriber.Subscribe(AddEnemy), enemyDiedSubscriber.Subscribe(RemoveEnemy)) ;
+        _subscribers = DisposableBag.Create(enemySpawnedSubscriber.Subscribe(AddEnemy), enemyDiedSubscriber.Subscribe(RemoveEnemy)) ;
+    }
+    
+    public bool HasAliveEnemies()
+    {
+        return AliveEnemies.Count != 0;
     }
     
     private void AddEnemy(EnemySpawnedMessage enemySpawnedMessage)
@@ -26,13 +32,9 @@ public class EnemiesController : MonoBehaviour, IEnemiesController
     {
         AliveEnemies.Remove(enemyDiedMessage.Enemy);
     }
-    public bool HasAliveEnemies()
-    {
-        return AliveEnemies.Count != 0;
-    }
 
     private void OnDestroy()
     {
-        _subscription.Dispose();
+        _subscribers.Dispose();
     }
 }

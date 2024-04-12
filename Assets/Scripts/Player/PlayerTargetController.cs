@@ -9,17 +9,23 @@ public class PlayerTargetController : MonoBehaviour, ITarget
     private Enemy _nearestEnemy;
     private IEnemiesController _enemiesController;
     private float _minDistance = 10f;
+    private bool _allEnemiesSpawned;
     private IPublisher<EnemyIsNearbyMessage> _enemyIsNearbyPublisher;
+    private IPublisher<AllEnemiesDiedMessage> _allEnemiesDied;
     private IDisposable _subscriber;
-
+    
     [Inject] 
     public void Construct(IEnemiesController enemiesController,
         IPublisher<EnemyIsNearbyMessage> enemyIsNearbyPublisher,
-        ISubscriber<EnemyDiedMessage> enemyDiedSubscriber)
+        IPublisher<AllEnemiesDiedMessage> allEnemiesDied,
+        ISubscriber<EnemyDiedMessage> enemyDiedSubscriber,
+        ISubscriber<AllEnemiesSpawnedMessage> allEnemiesSpawnedSubscriber)
     {
+        _allEnemiesDied = allEnemiesDied;
         _enemyIsNearbyPublisher = enemyIsNearbyPublisher;
         _enemiesController = enemiesController;
-        _subscriber = enemyDiedSubscriber.Subscribe(_=>OnNearestEnemyDied());
+        _subscriber = DisposableBag.Create(allEnemiesSpawnedSubscriber.Subscribe(_=>_allEnemiesSpawned = true),
+        enemyDiedSubscriber.Subscribe(_=>OnNearestEnemyDied()));
     }
 
     private void Update()
@@ -27,6 +33,11 @@ public class PlayerTargetController : MonoBehaviour, ITarget
         if (!_enemiesController.HasAliveEnemies())
         {
             _enemyIsNearbyPublisher.Publish(new EnemyIsNearbyMessage(false));
+            if (_allEnemiesSpawned)
+            {
+                _allEnemiesSpawned = false;
+                _allEnemiesDied.Publish(new AllEnemiesDiedMessage());
+            }
             return;
         }
         FindNearestEnemy();
@@ -45,6 +56,16 @@ public class PlayerTargetController : MonoBehaviour, ITarget
             _enemyIsNearbyPublisher.Publish(new EnemyIsNearbyMessage(false));
         }
     }
+    
+    public Enemy GetTarget()
+    {
+        return _nearestEnemy;
+    }
+
+    public bool HasTarget()
+    {
+        return _nearestEnemy != null;
+    }
 
     private void FindNearestEnemy()
     {
@@ -61,17 +82,7 @@ public class PlayerTargetController : MonoBehaviour, ITarget
             }
         }
     }
-
-    public Enemy GetTarget()
-    {
-        return _nearestEnemy;
-    }
-
-    public bool HasTarget()
-    {
-        return _nearestEnemy != null;
-    }
-
+    
     private void OnNearestEnemyDied()
     {
         _nearestEnemy = null;

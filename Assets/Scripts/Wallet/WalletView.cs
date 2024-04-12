@@ -28,7 +28,7 @@ public class WalletView : MonoBehaviour
         {
             _currentCountMoney = Mathf.Lerp(_currentCountMoney, newCountMoney, currentTime / _calculatingTime);
             currentTime += Time.deltaTime;
-            _countMoney.text = _currentCountMoney.ToString();
+            _countMoney.text = _currentCountMoney.ToString("0");
             yield return null;
         }
     }

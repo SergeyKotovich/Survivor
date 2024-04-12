@@ -15,10 +15,15 @@ public class EnemiesSpawner : MonoBehaviour
     private IPublisher<EnemySpawnedMessage> _enemySpawnedPublisher;
     private IDisposable _subscriber;
     private bool _playerAlive = true;
+    private IPublisher<AllEnemiesSpawnedMessage> _allEnemiesSpawnedPublisher;
 
     [Inject]
-    public void Construct (EnemyFactory enemyFactory , IPublisher<EnemySpawnedMessage> enemySpawnedPublisher, ISubscriber<PlayerDiedMessage> playerDiedSubscriber)
+    public void Construct (EnemyFactory enemyFactory,
+        IPublisher<EnemySpawnedMessage> enemySpawnedPublisher,
+        ISubscriber<PlayerDiedMessage> playerDiedSubscriber,
+        IPublisher<AllEnemiesSpawnedMessage> allEnemiesSpawnedPublisher)
     {
+        _allEnemiesSpawnedPublisher = allEnemiesSpawnedPublisher;
         _enemySpawnedPublisher = enemySpawnedPublisher;
         _enemyFactory = enemyFactory;
         _subscriber = playerDiedSubscriber.Subscribe( _ =>_playerAlive= false);
@@ -42,6 +47,7 @@ public class EnemiesSpawner : MonoBehaviour
                 _enemySpawnedPublisher.Publish(new EnemySpawnedMessage(enemy));
             }
         }
+        _allEnemiesSpawnedPublisher.Publish(new AllEnemiesSpawnedMessage());
     }
 
     private void OnDestroy()

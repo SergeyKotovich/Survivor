@@ -49,7 +49,11 @@ public class EnemyTargetController : MonoBehaviour
 
     public void ResetTarget()
     {
-        _navMeshAgent.isStopped = true;
+        if (_navMeshAgent.isActiveAndEnabled)
+        {
+            _navMeshAgent.isStopped = true;
+        }
+        
     }
 
    

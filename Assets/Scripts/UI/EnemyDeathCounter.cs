@@ -11,14 +11,14 @@ public class EnemyDeathCounter : MonoBehaviour, ICounter
    
    [SerializeField] private TextMeshProUGUI _counter;
 
-   private float _countingTime = 1f;
+   private float _countingTime = 0.5f;
    
    private IDisposable _subscriber;
-
-   [Inject]
-   public void Construct(ISubscriber<EnemyDiedMessage> enemyDiedSubscriber)
+   
+   public void Initialize(ISubscriber<EnemyDiedMessage> enemyDiedSubscriber, ISubscriber<BreakHasStartedMessage> breakHasStartedSubscriber)
    {
-      _subscriber = enemyDiedSubscriber.Subscribe(_ => UpdateCountDiedEnemies());
+      _subscriber = DisposableBag.Create(breakHasStartedSubscriber.Subscribe(_=>ResetCounter()),
+         enemyDiedSubscriber.Subscribe(_ => UpdateCountDiedEnemies()));
    }
 
    private void UpdateCountDiedEnemies()
@@ -26,8 +26,8 @@ public class EnemyDeathCounter : MonoBehaviour, ICounter
       Count++;
       _counter.text = Count.ToString();
    }
-   
-   public void ResetCounter()
+
+   private void ResetCounter()
    {
       StartCoroutine(ResetCounterCoroutines());
    }
