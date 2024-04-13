@@ -15,14 +15,15 @@ public class UIController : MonoBehaviour
     [Inject]
     private void Construct(Wallet wallet, PlayerController playerController,
         IPublisher<CountMoneyChangedMessage> countMoneyChangedSPublisher,
-        ISubscriber<BreakHasStartedMessage> breakHasStartedSubscriber,
-        ISubscriber<EnemyDiedMessage> enemyDiedSubscriber)
+        ISubscriber<EnemyDiedMessage> enemyDiedSubscriber,
+        ISubscriber<AllEnemiesDiedMessage> allEnemyDiedSubscriber,
+        IPublisher<BreakFinishedMessage> breakFinishedPublisher)
     {
         _wallet = wallet;
         _walletView.Initialize(_wallet);
-        _enemyDeathCounter.Initialize(enemyDiedSubscriber, breakHasStartedSubscriber);
-        _moneyConverter.Initialize(_enemyDeathCounter,countMoneyChangedSPublisher,breakHasStartedSubscriber);
-        _breakControllerView.Initialize(breakHasStartedSubscriber);
+        _enemyDeathCounter.Initialize(enemyDiedSubscriber, allEnemyDiedSubscriber);
+        _moneyConverter.Initialize(_enemyDeathCounter,countMoneyChangedSPublisher,allEnemyDiedSubscriber);
+        _breakControllerView.Initialize(allEnemyDiedSubscriber,breakFinishedPublisher);
         _improvementControllerView.Initialize(playerController.ShootingController);
     }
 }

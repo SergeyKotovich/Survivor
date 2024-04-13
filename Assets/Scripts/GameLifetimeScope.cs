@@ -40,8 +40,8 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterMessageBroker<EnemyIsNearbyMessage>(options);
         builder.RegisterMessageBroker<AllEnemiesSpawnedMessage>(options);
         builder.RegisterMessageBroker<AllEnemiesDiedMessage>(options);
-        
-        builder.RegisterMessageBroker<BreakHasStartedMessage>(options);
+
+        builder.RegisterMessageBroker<BreakFinishedMessage>(options);
         builder.RegisterMessageBroker<CountMoneyChangedMessage>(options);
         
         builder.RegisterMessageBroker<UpgradePurchasedMessage>(options);

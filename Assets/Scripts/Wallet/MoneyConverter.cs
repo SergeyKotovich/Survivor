@@ -9,20 +9,14 @@ public class MoneyConverter : MonoBehaviour
     private ICounter _enemyDeathCounter;
     private IPublisher<CountMoneyChangedMessage> _countMoneyChangedSPublisher;
     private IDisposable _subscriber;
-
-    //[Inject]
-  //  public void Construct( )
-  //  {
-  //      
-  //  }
-
+    
     public void Initialize(ICounter enemyDeathCounter, 
         IPublisher<CountMoneyChangedMessage> countMoneyChangedSPublisher,
-        ISubscriber<BreakHasStartedMessage> breakHasStartedSubscriber)
+        ISubscriber<AllEnemiesDiedMessage> allEnemiesDiedMessageSubscriber)
     {
         _enemyDeathCounter = enemyDeathCounter;
         _countMoneyChangedSPublisher = countMoneyChangedSPublisher;
-        _subscriber = breakHasStartedSubscriber.Subscribe(_ => ConvertMoney());
+        _subscriber = allEnemiesDiedMessageSubscriber.Subscribe(_ => ConvertMoney());
     }
     private void ConvertMoney()
     {

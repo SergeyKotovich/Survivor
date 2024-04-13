@@ -16,4 +16,4 @@ MonoBehaviour:
   <Speed>k__BackingField: 3.5
   <Damage>k__BackingField: 10
   <Health>k__BackingField: 50
-  <DelayAfterDeath>k__BackingField: 2000
+  <DelayAfterDeath>k__BackingField: 1000

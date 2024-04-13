@@ -6,7 +6,7 @@ using VContainer;
 
 public class ShopController : MonoBehaviour
 {
-    [SerializeField] private float _currentPrice = 30;
+    [SerializeField] private float _currentPrice = 1;
     private Wallet _wallet;
     private IPublisher<UpgradePurchasedMessage> _upgradePurchasedPublisher;
     private Action _attackSpeedImprovementCallback;

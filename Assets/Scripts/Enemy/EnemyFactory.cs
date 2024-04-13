@@ -47,7 +47,6 @@ public class EnemyFactory : IDisposable
         enemy.gameObject.SetActive(false);
         enemy.transform.position = Vector3.zero;
         enemy.transform.rotation = Quaternion.identity;
-        
     }
 
     private async UniTask OnEnemyDied(EnemyDiedMessage enemyDiedMessage)

@@ -10,14 +10,18 @@ public class BreakControllerView : MonoBehaviour
     [SerializeField] private float _breakTime = 10;
     [SerializeField] private float _delayTime = 1;
     private IDisposable _subscriber;
-    
-    public void Initialize(ISubscriber<BreakHasStartedMessage> breakHasStartedSubscriber)
+    private IPublisher<BreakFinishedMessage> _breakFinishedPublisher;
+
+    public void Initialize(ISubscriber<AllEnemiesDiedMessage>allEnemiesDiedSubscriber,
+        IPublisher<BreakFinishedMessage> breakFinishedMessagePublisher)
     {
-        _subscriber = breakHasStartedSubscriber.Subscribe(_ => StartBreak());
+        _breakFinishedPublisher = breakFinishedMessagePublisher;
+        _subscriber = allEnemiesDiedSubscriber.Subscribe(_ => StartBreak());
     }
 
     private void StartBreak()
     {
+        gameObject.SetActive(true);
         _timeLabel.text = _breakTime.ToString();
         StartCoroutine(StartBreakCoroutine());
     }
@@ -31,6 +35,8 @@ public class BreakControllerView : MonoBehaviour
             yield return new WaitForSeconds(_delayTime);
             currentTime--;
         }
+        _breakFinishedPublisher.Publish(new BreakFinishedMessage());
+        gameObject.SetActive(false);
     }
 
     private void OnDestroy()

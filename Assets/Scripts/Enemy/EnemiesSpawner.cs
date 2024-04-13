@@ -29,11 +29,11 @@ public class EnemiesSpawner : MonoBehaviour
         _subscriber = playerDiedSubscriber.Subscribe( _ =>_playerAlive= false);
     }
 
-    public async UniTask SpawnEnemies()
+    public async UniTask SpawnEnemies(int coefficient)
     {
         foreach (var spawnParameters in _spawnParameters)
         {
-            for (int i = 0; i < spawnParameters.CountEnemy; i++)
+            for (int i = 0; i < spawnParameters.CountEnemy*coefficient; i++)
             {
                 if (!_playerAlive)
                 {

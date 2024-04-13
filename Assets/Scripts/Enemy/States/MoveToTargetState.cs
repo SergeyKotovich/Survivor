@@ -12,6 +12,9 @@ public class MoveToTargetState : MonoBehaviour, IState
     private StateMachine _stateMachine;
     private IMovable _target;
     private IDisposable _subscriber;
+    
+    private Collider _collider;
+    private Rigidbody _rigidbody;
 
     [Inject]
     public void Construct(IMovable target, ISubscriber<PlayerDiedMessage> playerDiedSubscriber)
@@ -23,12 +26,16 @@ public class MoveToTargetState : MonoBehaviour, IState
     {
         _stateMachine = stateMachine;
         _enemyTargetController.TargetNearby += EnterAttackState;
+        _collider = GetComponent<Collider>();
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     public void OnEnter()
     {
         _enemyTargetController.SetTarget(_target);
         _animationController.ShowWalking();
+        _collider.enabled = true;
+        _rigidbody.isKinematic = false;
     }
     
     private void EnterAttackState()

@@ -20,8 +20,8 @@ public class ShootingController : MonoBehaviour, IImprover
 
     private void Start()
     {
-        AttackSpeedUpdated?.Invoke(_delayBetweenShots, _delayBetweenShots-_playerConfig.AttackImprovementStep);
-        AttackRangeUpdated?.Invoke(_attackRange, _attackRange+_playerConfig.AttackImprovementStep);
+      // AttackSpeedUpdated?.Invoke(_delayBetweenShots, _delayBetweenShots-_playerConfig.AttackImprovementStep);
+      // AttackRangeUpdated?.Invoke(_attackRange, _attackRange+_playerConfig.AttackImprovementStep);
     }
 
     public void Initialize(ITarget targetController, PlayerConfig playerConfig, ISubscriber<UpgradePurchasedMessage> upgradePurchasedSubscriber)
@@ -63,7 +63,6 @@ public class ShootingController : MonoBehaviour, IImprover
     {
         _attackRange += _playerConfig.AttackImprovementStep;
         AttackRangeUpdated?.Invoke(_attackRange, _attackRange+_playerConfig.AttackImprovementStep);
-        
     }
 
     private void OnDestroy()

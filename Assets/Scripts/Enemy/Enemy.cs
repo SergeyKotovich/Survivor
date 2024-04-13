@@ -1,4 +1,3 @@
-using System;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
@@ -48,6 +47,9 @@ public class Enemy : MonoBehaviour
     private void EnterDeathState()
     {
         _enemyDiedPublisher.Publish(new EnemyDiedMessage(this));
+        _enemyCollisionHandler.DamageReceived -= TakeDamage;
+        _healthController.Died -= EnterDeathState;
         _stateMachine.Enter<DeathState>();
+        
     }
 }
