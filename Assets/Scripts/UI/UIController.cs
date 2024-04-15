@@ -10,6 +10,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private WalletView _walletView;
     [SerializeField] private BreakControllerView _breakControllerView;
     [SerializeField] private ImprovementControllerView _improvementControllerView;
+    [SerializeField] private DeathScreenController _deathScreenController;
     private Wallet _wallet;
 
     [Inject]
@@ -24,6 +25,13 @@ public class UIController : MonoBehaviour
         _enemyDeathCounter.Initialize(enemyDiedSubscriber, allEnemyDiedSubscriber);
         _moneyConverter.Initialize(_enemyDeathCounter,countMoneyChangedSPublisher,allEnemyDiedSubscriber);
         _breakControllerView.Initialize(allEnemyDiedSubscriber,breakFinishedPublisher);
-        _improvementControllerView.Initialize(playerController.ShootingController);
+        _improvementControllerView.Initialize(playerController.ShootingController, 
+            playerController.MovementController,
+            playerController.Weapon);
+    }
+
+    public void ShowDeathScreen()
+    {
+        _deathScreenController.ShowDeathScreen();
     }
 }

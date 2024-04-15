@@ -37,7 +37,7 @@ public class MoveToTargetState : MonoBehaviour, IState
         _collider.enabled = true;
         _rigidbody.isKinematic = false;
     }
-    
+
     private void EnterAttackState()
     {
         _stateMachine.Enter<AttackState>();

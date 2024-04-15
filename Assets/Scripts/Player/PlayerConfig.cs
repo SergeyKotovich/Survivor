@@ -9,7 +9,6 @@ public class PlayerConfig : ScriptableObject
     [field: SerializeField] public float AttackSpeed { get; private set; }
     [field: SerializeField] public float AttackRange { get; private set; }
     [field: SerializeField] public float AttackImprovementStep { get; private set; }
-    [field: SerializeField] public float HealthImprovementStep { get; private set; }
     [field: SerializeField] public float DamageImprovementStep { get; private set; }
     [field: SerializeField] public float RunningSpeedImprovementStep { get; private set; }
     

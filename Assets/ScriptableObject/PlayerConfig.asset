@@ -14,10 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <RunningSpeed>k__BackingField: 3.5
   <Damage>k__BackingField: 50
-  <Health>k__BackingField: 50
-  <AttackSpeed>k__BackingField: 0.1
+  <Health>k__BackingField: 10
+  <AttackSpeed>k__BackingField: 1
   <AttackRange>k__BackingField: 5
   <AttackImprovementStep>k__BackingField: 0.1
-  <HealthImprovementStep>k__BackingField: 15
   <DamageImprovementStep>k__BackingField: 10
   <RunningSpeedImprovementStep>k__BackingField: 0.1

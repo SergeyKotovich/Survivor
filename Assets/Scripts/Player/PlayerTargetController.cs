@@ -8,7 +8,7 @@ public class PlayerTargetController : MonoBehaviour, ITarget
 {
     private Enemy _nearestEnemy;
     private IEnemiesController _enemiesController;
-    private float _minDistance = 10f;
+    private float _minDistance = 8f;
     private bool _allEnemiesSpawned;
     private IPublisher<EnemyIsNearbyMessage> _enemyIsNearbyPublisher;
     private IPublisher<AllEnemiesDiedMessage> _allEnemiesDied;

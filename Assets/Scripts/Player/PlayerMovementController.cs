@@ -3,8 +3,10 @@ using MessagePipe;
 using UnityEngine;
 using VContainer;
 
-public class PlayerMovementController : MonoBehaviour
+public class PlayerMovementController : MonoBehaviour, ISpeedImprovable
 {
+    public event Action<float, float> RunningSpeedUpdated;
+    
     [SerializeField] private PlayerAnimationController _animationController;
     [SerializeField] private CharacterController _characterController;
     
@@ -15,6 +17,7 @@ public class PlayerMovementController : MonoBehaviour
     private bool isPlayerAlive = true;
 
     private IDisposable _subscriber;
+    private PlayerConfig _playerConfig;
 
     [Inject]
     public void Construct(IInputHandler inputHandler, ISubscriber<PlayerDiedMessage> playerDiedSubscriber )
@@ -23,9 +26,15 @@ public class PlayerMovementController : MonoBehaviour
         _subscriber = playerDiedSubscriber.Subscribe(_ => isPlayerAlive = false);
     }
 
-    public void Initialize(float speed)
+    private void Start()
     {
-        _speed = speed;
+        RunningSpeedUpdated?.Invoke(_speed, _speed + _playerConfig.RunningSpeedImprovementStep);
+    }
+
+    public void Initialize(PlayerConfig playerConfig)
+    {
+        _playerConfig = playerConfig;
+        _speed = _playerConfig.RunningSpeed;
     }
 
     private void Update()
@@ -34,6 +43,12 @@ public class PlayerMovementController : MonoBehaviour
         {
             Move(); 
         }
+    }
+
+    public void ImproveRunningSpeed()
+    {
+        _speed += _playerConfig.RunningSpeedImprovementStep;
+        RunningSpeedUpdated?.Invoke(_speed, _speed + _playerConfig.RunningSpeedImprovementStep);
     }
 
     private void Move()

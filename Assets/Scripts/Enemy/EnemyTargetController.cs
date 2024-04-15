@@ -13,16 +13,19 @@ public class EnemyTargetController : MonoBehaviour
     [SerializeField] private float _minDistance = 1.5f;
     
     private IMovable _target;
+    private Rigidbody _rigidbody;
     
     public void Initialize(float speed)
     {
         _navMeshAgent.speed = speed;
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     private void Update()
     {
         if (_target!=null)
         {
+            transform.LookAt(_target.Position);
             if (IsTargetNearby())
             {
                 TargetNearby?.Invoke();
@@ -52,6 +55,7 @@ public class EnemyTargetController : MonoBehaviour
         if (_navMeshAgent.isActiveAndEnabled)
         {
             _navMeshAgent.isStopped = true;
+            _rigidbody.isKinematic = true;
         }
         
     }

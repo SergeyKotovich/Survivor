@@ -4,7 +4,7 @@ using MessagePipe;
 using UnityEngine;
 using VContainer;
 
-public class ShootingController : MonoBehaviour, IImprover
+public class ShootingController : MonoBehaviour, IAtackImprovable
 {
     public event Action CanShoot;
     public event Action<float, float> AttackSpeedUpdated; 
@@ -20,8 +20,8 @@ public class ShootingController : MonoBehaviour, IImprover
 
     private void Start()
     {
-      // AttackSpeedUpdated?.Invoke(_delayBetweenShots, _delayBetweenShots-_playerConfig.AttackImprovementStep);
-      // AttackRangeUpdated?.Invoke(_attackRange, _attackRange+_playerConfig.AttackImprovementStep);
+        AttackSpeedUpdated?.Invoke(_delayBetweenShots, _delayBetweenShots-_playerConfig.AttackImprovementStep);
+        AttackRangeUpdated?.Invoke(_attackRange, _attackRange+_playerConfig.AttackImprovementStep);
     }
 
     public void Initialize(ITarget targetController, PlayerConfig playerConfig, ISubscriber<UpgradePurchasedMessage> upgradePurchasedSubscriber)
@@ -31,6 +31,7 @@ public class ShootingController : MonoBehaviour, IImprover
         _delayBetweenShots = playerConfig.AttackSpeed;
         _attackRange = playerConfig.AttackRange;
         _subscriber = upgradePurchasedSubscriber.Subscribe(_=>ImproveAttackSpeed());
+        
     }
     
     public void Update()

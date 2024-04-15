@@ -36,4 +36,10 @@ public class HealthController : IHealthHandler, IHealth
             Died?.Invoke();
         }
     }
+
+    public void Heal()
+    {
+        _health = _maxHealth;
+        HealthChanged?.Invoke();
+    }
 }

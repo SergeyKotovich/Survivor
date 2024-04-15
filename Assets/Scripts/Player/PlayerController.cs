@@ -3,11 +3,13 @@ using MessagePipe;
 using UnityEngine;
 using VContainer;
 
-public class PlayerController : MonoBehaviour, IMovable , IHealthHandler
+public class PlayerController : MonoBehaviour, IMovable , IImprovable
 {
     public Vector3 Position => transform.position;
     public IHealth HealthController => _healthController;
-    public IImprover ShootingController => _shootingController;
+    public IAtackImprovable ShootingController => _shootingController;
+    public ISpeedImprovable MovementController => _playerMovementController;
+    public IDamageImprovable Weapon => _weapon;
 
     [SerializeField] private PlayerMovementController _playerMovementController;
     [SerializeField] private PlayerConfig _playerConfig;
@@ -32,16 +34,21 @@ public class PlayerController : MonoBehaviour, IMovable , IHealthHandler
 
     private void Initialize(ISubscriber<UpgradePurchasedMessage> upgradePurchasedSubscriber)
     {
-        _playerMovementController.Initialize(_playerConfig.RunningSpeed);
+        _playerMovementController.Initialize(_playerConfig);
         _shootingController.Initialize(_playerTargetController, _playerConfig, upgradePurchasedSubscriber);
-        _weapon.Initialize(_playerConfig.Damage);
+        _weapon.Initialize(_playerConfig);
     }
     
     public void TakeDamage(float damage)
     {
-        var healthController = (IHealthHandler)_healthController;
-        healthController.TakeDamage(damage);
+        _healthController.TakeDamage(damage);
     }
+
+    public void Heal()
+    {
+        _healthController.Heal();
+    }
+
     public void ImproveAttackSpeed()
     {
         _shootingController.ImproveAttackSpeed();
@@ -50,6 +57,16 @@ public class PlayerController : MonoBehaviour, IMovable , IHealthHandler
     public void ImproveAttackRange()
     {
         _shootingController.ImproveAttackRange();
+    }
+
+    public void ImproveRunningSpeed()
+    {
+        _playerMovementController.ImproveRunningSpeed();
+    }
+
+    public void ImproveDamage()
+    {
+        _weapon.ImproveDamage();
     }
 
     private void Shoot()
