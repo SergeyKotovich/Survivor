@@ -30,10 +30,7 @@ public class ImprovementControllerView : MonoBehaviour
         _weapon.DamageUpdated += UpdateDamage;
     }
 
-    private void UpdateTextValues(TextMeshProUGUI currentValueText,
-        TextMeshProUGUI nextValueText,
-        float currentValue,
-        float nextValue)
+    private void UpdateTextValues(TextMeshProUGUI currentValueText, TextMeshProUGUI nextValueText, float currentValue, float nextValue)
     {
         currentValueText.text = currentValue.ToString("0.0");
         nextValueText.text = nextValue.ToString("0.0");
@@ -41,20 +38,20 @@ public class ImprovementControllerView : MonoBehaviour
     
     private void UpdateAttackSpeed(float currentValue, float nextValue)
     {
-       UpdateTextValues(_currentAttackSpeed,_nextAttackSpeed,currentValue,nextValue);
+        UpdateTextValues(_currentAttackSpeed,_nextAttackSpeed, currentValue,nextValue);
     }
 
     private void UpdateAttackRange(float currentValue, float nextValue)
     {
-        UpdateTextValues(_currentAttackRange,_nextAttackRange,currentValue,nextValue);
+        UpdateTextValues(_currentAttackRange,_nextAttackRange, currentValue,nextValue);
     }
     private void UpdateRunningSpeed(float currentValue, float nextValue)
     {
-        UpdateTextValues(_currentRunningSpeed,_nextRunningSpeed,currentValue,nextValue);
+        UpdateTextValues(_currentRunningSpeed,_nextRunningSpeed, currentValue,nextValue);
     }
     private void UpdateDamage(float currentValue, float nextValue)
     {
-        UpdateTextValues(_currentDamage,_nextDamage,currentValue,nextValue);
+        UpdateTextValues(_currentDamage,_nextDamage, currentValue,nextValue);
     }
 
     private void OnDestroy()

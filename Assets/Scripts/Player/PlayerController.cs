@@ -3,7 +3,7 @@ using MessagePipe;
 using UnityEngine;
 using VContainer;
 
-public class PlayerController : MonoBehaviour, IMovable , IImprovable
+public class PlayerController : MonoBehaviour, IMovable , IImprovable 
 {
     public Vector3 Position => transform.position;
     public IHealth HealthController => _healthController;
@@ -22,20 +22,19 @@ public class PlayerController : MonoBehaviour, IMovable , IImprovable
     private IPublisher<PlayerDiedMessage> _playerDiedPublisher;
 
     [Inject]
-    public void Construct(IPublisher<PlayerDiedMessage> playerDiedPublisher,
-        ISubscriber<UpgradePurchasedMessage> upgradePurchasedSubscriber)
+    public void Construct(IPublisher<PlayerDiedMessage> playerDiedPublisher)
     {
         _playerDiedPublisher = playerDiedPublisher;
         _healthController = new HealthController(_playerConfig.Health);
         _healthController.Died += OnPlayerDied;
         _shootingController.CanShoot += Shoot;
-        Initialize(upgradePurchasedSubscriber);
+        Initialize();
     }
 
-    private void Initialize(ISubscriber<UpgradePurchasedMessage> upgradePurchasedSubscriber)
+    private void Initialize()
     {
         _playerMovementController.Initialize(_playerConfig);
-        _shootingController.Initialize(_playerTargetController, _playerConfig, upgradePurchasedSubscriber);
+        _shootingController.Initialize(_playerTargetController, _playerConfig);
         _weapon.Initialize(_playerConfig);
     }
     
@@ -85,4 +84,6 @@ public class PlayerController : MonoBehaviour, IMovable , IImprovable
     {
         _healthController.Died -= OnPlayerDied;
     }
+
+    
 }

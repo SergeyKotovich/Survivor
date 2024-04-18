@@ -6,14 +6,18 @@ using VContainer;
 
 public class ShopController : MonoBehaviour
 {
-    [SerializeField] private float _currentPrice = 1;
+    [SerializeField] private ShopConfig _shopConfig;
     private Wallet _wallet;
-    private IPublisher<UpgradePurchasedMessage> _upgradePurchasedPublisher;
     private Action _attackSpeedImprovementCallback;
     private Action _attackRangeImprovementCallBack;
     private Action _runningSpeedImprovementCallBack;
     private Action _damageImprovementCallBack;
     private Action _healCallBack;
+    private int _coefficientAttackSpeed;
+    private int _coefficientAttackRange;
+    private int _coefficientRunningSpeed;
+    private int _coefficientDamage;
+    
 
     [Inject]
     public void Construct(Wallet wallet, IImprovable playerController)
@@ -29,7 +33,8 @@ public class ShopController : MonoBehaviour
     [UsedImplicitly]
     public void SellAttackSpeedImprovement()
     {
-        if (_wallet.TryBuy(_currentPrice))
+        _coefficientAttackSpeed++;
+        if (_wallet.TryBuy(_shopConfig.PriceImprovement*_coefficientAttackSpeed))
         {
             _attackSpeedImprovementCallback?.Invoke();
         }
@@ -37,7 +42,8 @@ public class ShopController : MonoBehaviour
     [UsedImplicitly]
     public void SellAttackRangeImprovement()
     {
-        if (_wallet.TryBuy(_currentPrice))
+        _coefficientAttackRange++;
+        if (_wallet.TryBuy(_shopConfig.PriceImprovement*_coefficientAttackRange))
         {
             _attackRangeImprovementCallBack?.Invoke();
         }
@@ -45,7 +51,8 @@ public class ShopController : MonoBehaviour
     [UsedImplicitly]
     public void SellRunningSpeedImprovement()
     {
-        if (_wallet.TryBuy(_currentPrice))
+        _coefficientRunningSpeed++;
+        if (_wallet.TryBuy(_shopConfig.PriceImprovement*_coefficientRunningSpeed))
         {
             _runningSpeedImprovementCallBack?.Invoke();
         }
@@ -53,7 +60,8 @@ public class ShopController : MonoBehaviour
     [UsedImplicitly]
     public void SellDamageImprovement()
     {
-        if (_wallet.TryBuy(_currentPrice))
+        _coefficientDamage++;
+        if (_wallet.TryBuy(_shopConfig.PriceImprovement*_coefficientDamage))
         {
             _damageImprovementCallBack?.Invoke();
         }
@@ -61,7 +69,7 @@ public class ShopController : MonoBehaviour
     [UsedImplicitly]
     public void SellMedicine()
     {
-        if (_wallet.TryBuy(_currentPrice))
+        if (_wallet.TryBuy(_shopConfig.PriceHeal))
         {
             _healCallBack?.Invoke();
         }

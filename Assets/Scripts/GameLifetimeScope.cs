@@ -44,7 +44,6 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterMessageBroker<BreakFinishedMessage>(options);
         builder.RegisterMessageBroker<CountMoneyChangedMessage>(options);
         
-        builder.RegisterMessageBroker<UpgradePurchasedMessage>(options);
         builder.RegisterMessageBroker<PlayerDiedMessage>(options);
     }
 

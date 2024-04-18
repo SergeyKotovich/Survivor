@@ -16,7 +16,6 @@ public class ShootingController : MonoBehaviour, IAtackImprovable
     
     private ITarget _targetController;
     private PlayerConfig _playerConfig;
-    private IDisposable _subscriber;
 
     private void Start()
     {
@@ -24,14 +23,12 @@ public class ShootingController : MonoBehaviour, IAtackImprovable
         AttackRangeUpdated?.Invoke(_attackRange, _attackRange+_playerConfig.AttackImprovementStep);
     }
 
-    public void Initialize(ITarget targetController, PlayerConfig playerConfig, ISubscriber<UpgradePurchasedMessage> upgradePurchasedSubscriber)
+    public void Initialize(ITarget targetController, PlayerConfig playerConfig)
     {
         _playerConfig = playerConfig;
         _targetController = targetController;
         _delayBetweenShots = playerConfig.AttackSpeed;
         _attackRange = playerConfig.AttackRange;
-        _subscriber = upgradePurchasedSubscriber.Subscribe(_=>ImproveAttackSpeed());
-        
     }
     
     public void Update()
@@ -64,10 +61,5 @@ public class ShootingController : MonoBehaviour, IAtackImprovable
     {
         _attackRange += _playerConfig.AttackImprovementStep;
         AttackRangeUpdated?.Invoke(_attackRange, _attackRange+_playerConfig.AttackImprovementStep);
-    }
-
-    private void OnDestroy()
-    {
-        _subscriber.Dispose();
     }
 }

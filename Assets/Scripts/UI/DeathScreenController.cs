@@ -13,6 +13,7 @@ public class DeathScreenController : MonoBehaviour
 
     public void ShowDeathScreen()
     {
+        gameObject.SetActive(true);
         var sequence = DOTween.Sequence();
         sequence.Insert(_timeOffset, _material.DOFade(_endValue, _duration));
         sequence.Append(_youDied.DOFade(_endValue, _duration));
