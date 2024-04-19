@@ -12,13 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 238b1d1739b7455297461f2f5969093c, type: 3}
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
-  <RunningSpeed>k__BackingField: 3.5
+  <RunningSpeed>k__BackingField: 3
   <Damage>k__BackingField: 50
   <Health>k__BackingField: 100
-  <AttackSpeed>k__BackingField: 1
+  <AttackSpeed>k__BackingField: 1.5
   <AttackRange>k__BackingField: 5
   <AttackImprovementStep>k__BackingField: 0.1
   <DamageImprovementStep>k__BackingField: 10
   <RunningSpeedImprovementStep>k__BackingField: 0.1
-  <PriceImprovement>k__BackingField: 10
-  <PriceHeal>k__BackingField: 1000

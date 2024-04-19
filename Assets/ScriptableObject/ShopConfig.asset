@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3f52824de7f4b1c91b4f87129fd6fb8, type: 3}
   m_Name: ShopConfig
   m_EditorClassIdentifier: 
-  <PriceImprovement>k__BackingField: 1
-  <PriceHeal>k__BackingField: 2
+  <PriceImprovement>k__BackingField: 100
+  <PriceHeal>k__BackingField: 1000

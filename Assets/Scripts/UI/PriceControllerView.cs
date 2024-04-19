@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using VContainer;
 
 public class PriceControllerView : MonoBehaviour
 {
@@ -9,7 +10,19 @@ public class PriceControllerView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _priceRunningSpeed;
     [SerializeField] private TextMeshProUGUI _priceDamage;
     [SerializeField] private TextMeshProUGUI _priceHeal;
+    private IPrice _shopController;
 
+    [Inject]
+    public void Construct(IPrice shopController)
+    {
+        _shopController = shopController;
+        _shopController.AttackSpeedImproved += UpdatePriceAttackSpeed;
+        _shopController.AttackRangeImproved += UpdatePriceAttackRange;
+        _shopController.RunningSpeedImproved += UpdatePriceRunningSpeed;
+        _shopController.DamageImproved += UpdatePriceDamage;
+        _shopController.HealImproved += UpdatePriceHeal;
+    }
+    
     private void UpdatePriceAttackSpeed(int price)
     {
         _priceAttackSpeed.text = price.ToString();
@@ -29,5 +42,14 @@ public class PriceControllerView : MonoBehaviour
     private void UpdatePriceHeal(int price)
     {
         _priceHeal.text = price.ToString();
+    }
+
+    private void OnDestroy()
+    {
+        _shopController.AttackSpeedImproved -= UpdatePriceAttackSpeed;
+        _shopController.AttackRangeImproved -= UpdatePriceAttackRange;
+        _shopController.RunningSpeedImproved -= UpdatePriceRunningSpeed;
+        _shopController.DamageImproved -= UpdatePriceDamage;
+        _shopController.HealImproved -= UpdatePriceHeal;
     }
 }

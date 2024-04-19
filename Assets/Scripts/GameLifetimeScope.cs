@@ -11,6 +11,7 @@ public class GameLifetimeScope : LifetimeScope
     [SerializeField] private EnemiesController _enemiesController;
     [SerializeField] private UIController _uiController;
     [SerializeField] private WavesController _wavesController;
+    [SerializeField] private ShopController _shopController;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -24,6 +25,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterInstance(_playerController).AsImplementedInterfaces();
         builder.RegisterInstance(_uiController);
         builder.RegisterInstance(_wavesController);
+        builder.RegisterInstance(_shopController).AsImplementedInterfaces();
 
         builder.RegisterEntryPoint<GameController>();
         
