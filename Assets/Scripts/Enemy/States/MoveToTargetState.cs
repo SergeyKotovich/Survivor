@@ -1,7 +1,6 @@
 using System;
 using MessagePipe;
 using UnityEngine;
-using UnityEngine.AI;
 using VContainer;
 
 public class MoveToTargetState : MonoBehaviour, IState

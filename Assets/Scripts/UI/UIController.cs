@@ -11,6 +11,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private BreakControllerView _breakControllerView;
     [SerializeField] private ImprovementControllerView _improvementControllerView;
     [SerializeField] private DeathScreenController _deathScreenController;
+    [SerializeField] private KateNpcController _kateNpcView;
     private Wallet _wallet;
 
     [Inject]
@@ -24,7 +25,7 @@ public class UIController : MonoBehaviour
         _walletView.Initialize(_wallet);
         _enemyDeathCounter.Initialize(enemyDiedSubscriber, allEnemyDiedSubscriber);
         _moneyConverter.Initialize(_enemyDeathCounter,countMoneyChangedSPublisher,allEnemyDiedSubscriber);
-        _breakControllerView.Initialize(allEnemyDiedSubscriber,breakFinishedPublisher);
+        _breakControllerView.Initialize(allEnemyDiedSubscriber,breakFinishedPublisher, _kateNpcView.ShowMessages);
         _improvementControllerView.Initialize(playerController.ShootingController, 
             playerController.MovementController,
             playerController.Weapon);

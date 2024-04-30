@@ -70,7 +70,6 @@ public class PlayerTargetController : MonoBehaviour, ITarget
     private void FindNearestEnemy()
     {
         _nearestEnemy = _enemiesController.AliveEnemies.First();
-       
         var minDistance = Vector3.Distance(transform.position, _nearestEnemy.transform.position);
         foreach (var enemy in _enemiesController.AliveEnemies)
         {

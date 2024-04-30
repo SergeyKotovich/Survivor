@@ -11,19 +11,27 @@ public class BreakControllerView : MonoBehaviour
     [SerializeField] private float _delayTime = 1;
     private IDisposable _subscriber;
     private IPublisher<BreakFinishedMessage> _breakFinishedPublisher;
+    private int _breakCounter;
+    private Action _npcMessagesCallback;
 
     public void Initialize(ISubscriber<AllEnemiesDiedMessage>allEnemiesDiedSubscriber,
-        IPublisher<BreakFinishedMessage> breakFinishedMessagePublisher)
+        IPublisher<BreakFinishedMessage> breakFinishedMessagePublisher, Action NPCMessagesCallback)
     {
+        _npcMessagesCallback = NPCMessagesCallback;
         _breakFinishedPublisher = breakFinishedMessagePublisher;
         _subscriber = allEnemiesDiedSubscriber.Subscribe(_ => StartBreak());
     }
 
     private void StartBreak()
     {
+        _breakCounter++;
         gameObject.SetActive(true);
         _timeLabel.text = _breakTime.ToString();
         StartCoroutine(StartBreakCoroutine());
+        if (_breakCounter == Decimal.One)
+        {
+            _npcMessagesCallback?.Invoke();
+        }
     }
 
     private IEnumerator StartBreakCoroutine()

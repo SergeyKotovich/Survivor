@@ -57,7 +57,6 @@ public class EnemyTargetController : MonoBehaviour
             _navMeshAgent.isStopped = true;
             _rigidbody.isKinematic = true;
         }
-        
     }
 
    
