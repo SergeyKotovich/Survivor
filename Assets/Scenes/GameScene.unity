@@ -1808,19 +1808,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnParameters:
   - <Point>k__BackingField: {fileID: 25760701}
-    <CountEnemy>k__BackingField: 5
+    <CountEnemy>k__BackingField: 1
     <EnemyConfig>k__BackingField: {fileID: 11400000, guid: 8134383d6863b514c90de3e11df43e6d, type: 2}
     <Radius>k__BackingField: 3
   - <Point>k__BackingField: {fileID: 1865608604}
-    <CountEnemy>k__BackingField: 5
+    <CountEnemy>k__BackingField: 1
     <EnemyConfig>k__BackingField: {fileID: 11400000, guid: 8134383d6863b514c90de3e11df43e6d, type: 2}
     <Radius>k__BackingField: 3
   - <Point>k__BackingField: {fileID: 309275326}
-    <CountEnemy>k__BackingField: 5
+    <CountEnemy>k__BackingField: 1
     <EnemyConfig>k__BackingField: {fileID: 11400000, guid: 8134383d6863b514c90de3e11df43e6d, type: 2}
     <Radius>k__BackingField: 3
   - <Point>k__BackingField: {fileID: 622193018}
-    <CountEnemy>k__BackingField: 5
+    <CountEnemy>k__BackingField: 1
     <EnemyConfig>k__BackingField: {fileID: 11400000, guid: 8134383d6863b514c90de3e11df43e6d, type: 2}
     <Radius>k__BackingField: 3
   _delayBetweenSpawn: 50
@@ -7456,7 +7456,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _timeLabel: {fileID: 97675961}
-  _breakTime: 5
+  _breakTime: 30
   _delayTime: 1
 --- !u!1 &976585368
 GameObject:

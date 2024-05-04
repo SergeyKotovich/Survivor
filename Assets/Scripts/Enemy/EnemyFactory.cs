@@ -29,6 +29,7 @@ public class EnemyFactory : IDisposable
         _enemyConfig = enemyConfig;
         var enemy = _enemyPool.Get();
         enemy.Initialize(enemyConfig);
+        enemy.transform.position = _position;
         return enemy;
     }
 
