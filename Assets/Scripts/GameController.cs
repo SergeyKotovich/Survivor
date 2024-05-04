@@ -18,7 +18,7 @@ public class GameController : IStartable, IDisposable
 
     public void Start()
     {
-      _wavesController.StartSpawn();
+        _wavesController.StartSpawn();
     }
 
     private void EndGame()
