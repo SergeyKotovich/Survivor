@@ -17,25 +17,28 @@ public class PlayerController : MonoBehaviour, IMovable , IImprovable
     [SerializeField] private Weapon _weapon;
     [SerializeField] private ShootingController _shootingController;
     [SerializeField] private PlayerTargetController _playerTargetController;
+    [SerializeField] private Inventory _inventory;
+    [SerializeField] private TriggerHandler _triggerHandler;
 
     private HealthController _healthController;
     private IPublisher<PlayerDiedMessage> _playerDiedPublisher;
 
     [Inject]
-    public void Construct(IPublisher<PlayerDiedMessage> playerDiedPublisher)
+    public void Construct(IPublisher<PlayerDiedMessage> playerDiedPublisher,IPublisher<CountMoneyChangedMessage> countMoneyChangedSPublisher)
     {
         _playerDiedPublisher = playerDiedPublisher;
         _healthController = new HealthController(_playerConfig.Health);
         _healthController.Died += OnPlayerDied;
         _shootingController.CanShoot += Shoot;
-        Initialize();
+        Initialize(countMoneyChangedSPublisher);
     }
 
-    private void Initialize()
+    private void Initialize(IPublisher<CountMoneyChangedMessage> countMoneyChangedSPublisher)
     {
         _playerMovementController.Initialize(_playerConfig);
         _shootingController.Initialize(_playerTargetController, _playerConfig);
         _weapon.Initialize(_playerConfig);
+        _triggerHandler.Initialize(_inventory, countMoneyChangedSPublisher);
     }
     
     public void TakeDamage(float damage)

@@ -7,6 +7,9 @@ TagManager:
   - Floor
   - Enemy
   - Bullet
+  - Firewood
+  - SmallFirewood
+  - Bonfire
   layers:
   - Default
   - TransparentFX

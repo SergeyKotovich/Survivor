@@ -1104,6 +1104,8 @@ GameObject:
   - component: {fileID: 2761527271262300552}
   - component: {fileID: 6801053188875419263}
   - component: {fileID: 9153349168358148704}
+  - component: {fileID: 7564843802370903016}
+  - component: {fileID: 2930766986158507838}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1185,6 +1187,8 @@ MonoBehaviour:
   _weapon: {fileID: 379414086}
   _shootingController: {fileID: 379414087}
   _playerTargetController: {fileID: 6801053188875419263}
+  _firewoodStorage: {fileID: 0}
+  _firewoodAddingHandler: {fileID: 0}
 --- !u!114 &2761527271262300554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1234,6 +1238,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 306deb92e30c4284bf51002f2c867fce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7564843802370903016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5894332989830527426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 320e14226d8019141a1228474dec526b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _countAvailablePlace: 1
+--- !u!114 &2930766986158507838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5894332989830527426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 445ddc2c6df4448fb89864ee207fef1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5894332989830527430
