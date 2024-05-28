@@ -12,6 +12,7 @@ public class GameLifetimeScope : LifetimeScope
     [SerializeField] private UIController _uiController;
     [SerializeField] private WavesController _wavesController;
     [SerializeField] private ShopController _shopController;
+    [SerializeField] private Coin _coinPrefab;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -19,6 +20,7 @@ public class GameLifetimeScope : LifetimeScope
         
         builder.Register<EnemyFactory>(Lifetime.Singleton);
         builder.Register<Wallet>(Lifetime.Singleton);
+        builder.Register<CoinsFactory>(Lifetime.Singleton);
 
         builder.RegisterInstance(_enemiesController).AsImplementedInterfaces();
         builder.RegisterInstance(_enemiesSpawner);
@@ -26,6 +28,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterInstance(_uiController);
         builder.RegisterInstance(_wavesController);
         builder.RegisterInstance(_shopController).AsImplementedInterfaces();
+        builder.RegisterInstance(_coinPrefab);
 
         builder.RegisterEntryPoint<GameController>();
         

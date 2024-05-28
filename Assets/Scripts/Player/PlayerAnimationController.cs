@@ -31,7 +31,4 @@ public class PlayerAnimationController : MonoBehaviour
     {
         _animator.SetTrigger(_death);
     }
-
-    
-    
 }

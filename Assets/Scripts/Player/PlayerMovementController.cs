@@ -56,7 +56,6 @@ public class PlayerMovementController : MonoBehaviour, ISpeedImprovable
         var input = _inputHandler.GetInput();
         
         var direction = new Vector3(input.x, 0, input.y).normalized;
-        
         if (direction == Vector3.zero)
         {
             _animationController.PlayIdleAnimation();

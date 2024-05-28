@@ -11,7 +11,7 @@ public class ShootingController : MonoBehaviour, IAtackImprovable
     public event Action<float, float> AttackRangeUpdated; 
 
     private float _attackRange ;
-    private float _delayBetweenShots ;
+    private float _cooldownAfterShot ;
     private float _currentTime;
     
     private ITarget _targetController;
@@ -19,7 +19,7 @@ public class ShootingController : MonoBehaviour, IAtackImprovable
 
     private void Start()
     {
-        AttackSpeedUpdated?.Invoke(_delayBetweenShots, _delayBetweenShots-_playerConfig.AttackImprovementStep);
+        AttackSpeedUpdated?.Invoke(_cooldownAfterShot, _cooldownAfterShot-_playerConfig.AttackImprovementStep);
         AttackRangeUpdated?.Invoke(_attackRange, _attackRange+_playerConfig.AttackImprovementStep);
     }
 
@@ -27,7 +27,7 @@ public class ShootingController : MonoBehaviour, IAtackImprovable
     {
         _playerConfig = playerConfig;
         _targetController = targetController;
-        _delayBetweenShots = playerConfig.AttackSpeed;
+        _cooldownAfterShot = playerConfig.AttackSpeed;
         _attackRange = playerConfig.AttackRange;
     }
     
@@ -44,7 +44,7 @@ public class ShootingController : MonoBehaviour, IAtackImprovable
         {
             return;
         }
-        if (_currentTime>=_delayBetweenShots)
+        if (_currentTime>=_cooldownAfterShot)
         {
             CanShoot?.Invoke();
             _currentTime = 0;
@@ -53,8 +53,8 @@ public class ShootingController : MonoBehaviour, IAtackImprovable
 
     public void ImproveAttackSpeed()
     {
-        _delayBetweenShots -= _playerConfig.AttackImprovementStep;
-        AttackSpeedUpdated?.Invoke(_delayBetweenShots, _delayBetweenShots - _playerConfig.AttackImprovementStep); 
+        _cooldownAfterShot -= _playerConfig.AttackImprovementStep;
+        AttackSpeedUpdated?.Invoke(_cooldownAfterShot, _cooldownAfterShot - _playerConfig.AttackImprovementStep); 
     }
 
     public void ImproveAttackRange()

@@ -4,12 +4,14 @@ using VContainer.Unity;
 
 public class GameController : IStartable, IDisposable
 {
-    private WavesController _wavesController;
-    private UIController _uiController;
-    private IDisposable _subscriber;
+    private readonly WavesController _wavesController;
+    private readonly UIController _uiController;
+    private readonly IDisposable _subscriber;
 
 
-    public GameController(WavesController wavesController, UIController uiController, ISubscriber<PlayerDiedMessage> playerDiedSubscriber)
+    public GameController(WavesController wavesController, 
+        UIController uiController, 
+        ISubscriber<PlayerDiedMessage> playerDiedSubscriber)
     {
         _uiController = uiController;
         _wavesController = wavesController;

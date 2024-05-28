@@ -29,6 +29,4 @@ public class DeathState : MonoBehaviour, IState
         _collider.enabled = false;
         _animationController.ShowDeath();
     }
-
-   
 }

@@ -1,3 +1,4 @@
+using System;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
@@ -32,9 +33,13 @@ public class Enemy : MonoBehaviour
     }
     public void Initialize(EnemyConfig enemyConfig)
     {
+        Unsubscribe();
+        
         _healthController = new HealthController(enemyConfig.Health);
+        
         _enemyCollisionHandler.DamageReceived += TakeDamage;
         _healthController.Died += EnterDeathState;
+        
         _enemyAttackController.Initialize(enemyConfig.Damage);
         _enemyTargetController.Initialize(enemyConfig.Speed);
     }
@@ -47,9 +52,25 @@ public class Enemy : MonoBehaviour
     private void EnterDeathState()
     {
         _enemyDiedPublisher.Publish(new EnemyDiedMessage(this));
-        _enemyCollisionHandler.DamageReceived -= TakeDamage;
-        _healthController.Died -= EnterDeathState;
+        Unsubscribe();
         _stateMachine.Enter<DeathState>();
-        
+    }
+
+    private void Unsubscribe()
+    {
+        if (_enemyCollisionHandler!=null)
+        {
+            _enemyCollisionHandler.DamageReceived -= TakeDamage;
+        }
+
+        if (_healthController!=null)
+        {
+            _healthController.Died -= EnterDeathState;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        Unsubscribe();
     }
 }

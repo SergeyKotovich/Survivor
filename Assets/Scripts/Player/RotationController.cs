@@ -7,54 +7,53 @@ namespace Player
 {
     public class RotationController : MonoBehaviour
     {
-        private bool _hasEnemyNearby;
+        private float _rotationSpeed = 720f;
+        private int _minDistance = 8;
+        private Vector3 _lastDirection;
 
         private IInputHandler _inputHandler;
+        private Enemy _enemy;
         private IDisposable _subscriber;
 
         [Inject]
         public void Construct(IInputHandler inputHandler, ISubscriber<EnemyIsNearbyMessage> enemyIsNearbySubscriber)
         {
             _inputHandler = inputHandler;
-            _subscriber = enemyIsNearbySubscriber.Subscribe(ChangeFlag);
+            _subscriber = enemyIsNearbySubscriber.Subscribe(SetEnemy);
+        }
+
+        private void SetEnemy(EnemyIsNearbyMessage enemyIsNearbyMessage)
+        {
+            _enemy = enemyIsNearbyMessage.Enemy;
         }
 
         private void Update()
         {
-            if (_hasEnemyNearby)
-            {
-                return;
-            }
-
             Rotate();
-        }
+            if (_enemy != null)
+            {
+                var target = _enemy.transform.position;
 
-        private void ChangeFlag(EnemyIsNearbyMessage enemyIsNearbyMessage)
-        {
-            _hasEnemyNearby = enemyIsNearbyMessage.HasEnemy;
+                var isEnemyNearby = Vector3.Distance(transform.position, target) < _minDistance;
+                if (isEnemyNearby)
+                {
+                    transform.LookAt(target);
+                }
+            }
         }
 
         private void Rotate()
         {
             var input = _inputHandler.GetInput();
-
-
-            var horizontal = input.x;
-            var vertical = input.y;
-            var rotationY = 180f;
-
-            if (horizontal != 0)
+            var direction = new Vector3(input.x, 0, input.y);
+            if (direction != Vector3.zero)
             {
-                rotationY = horizontal > 0 ? 90f : -90f;
-            }
-            else if (vertical != 0)
-            {
-                rotationY = vertical > 0 ? 0f : 180f;
+                _lastDirection = direction;
             }
 
-            var newRotation = Quaternion.Euler(0f, rotationY, 0f);
-
-            transform.rotation = newRotation;
+            Quaternion toRotation = Quaternion.LookRotation(_lastDirection);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation,
+                _rotationSpeed * Time.deltaTime);
         }
 
         private void OnDestroy()

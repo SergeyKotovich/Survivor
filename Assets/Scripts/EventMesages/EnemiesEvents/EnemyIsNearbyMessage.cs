@@ -1,9 +1,9 @@
 public struct EnemyIsNearbyMessage
 {
-    public readonly bool HasEnemy;
+    public readonly Enemy Enemy;
 
-    public EnemyIsNearbyMessage(bool hasEnemy)
+    public EnemyIsNearbyMessage(Enemy enemy)
     {
-        HasEnemy = hasEnemy;
+        Enemy = enemy;
     }
 }

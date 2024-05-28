@@ -1187,8 +1187,8 @@ MonoBehaviour:
   _weapon: {fileID: 379414086}
   _shootingController: {fileID: 379414087}
   _playerTargetController: {fileID: 6801053188875419263}
-  _firewoodStorage: {fileID: 0}
-  _firewoodAddingHandler: {fileID: 0}
+  _inventory: {fileID: 0}
+  _triggerHandler: {fileID: 0}
 --- !u!114 &2761527271262300554
 MonoBehaviour:
   m_ObjectHideFlags: 0

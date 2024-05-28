@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    [field:SerializeField] public int CountMoney { get; private set; }
+    private const int _rotationSpeed = 50;
+    [field: SerializeField] public int CountMoney { get; private set; }
+
     protected virtual void Update()
     {
-        transform.Rotate(new Vector3(0,0,2));
+        transform.Rotate(new Vector3(0, 0, 2) * Time.deltaTime * _rotationSpeed);
     }
 
     public void DestroyCoin()

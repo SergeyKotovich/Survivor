@@ -36,7 +36,7 @@ public class AttackState : MonoBehaviour, IState
     }
 
     public void OnEnter()
-    { 
+    {
         _enemyTargetController.ResetTarget();
         _animationController.ShowAttack();
     }

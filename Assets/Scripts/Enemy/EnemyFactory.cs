@@ -9,21 +9,21 @@ using VContainer.Unity;
 
 public class EnemyFactory : IDisposable
 {
-    private IObjectResolver _objectResolver;
-    private IDisposable _subscriber;
+    private readonly IObjectResolver _container;
+    private readonly IDisposable _subscriber;
     
-    private ObjectPool<Enemy> _enemyPool;
+    private readonly ObjectPool<Enemy> _enemyPool;
     private EnemyConfig _enemyConfig;
     private Vector3 _position;
 
-    public EnemyFactory(IObjectResolver objectResolver, ISubscriber<EnemyDiedMessage> enemyDiedSubscriber)
+    public EnemyFactory(IObjectResolver container, ISubscriber<EnemyDiedMessage> enemyDiedSubscriber)
     {
-        _objectResolver = objectResolver;
+        _container = container;
         _subscriber =  enemyDiedSubscriber.Subscribe(enemyDiedMessage => OnEnemyDied(enemyDiedMessage));
         _enemyPool = new ObjectPool<Enemy>(Create, Get, Release);
     }
 
-    public Enemy GetEnemy(EnemyConfig enemyConfig, Vector3 position)
+    public Enemy Spawn(EnemyConfig enemyConfig, Vector3 position)
     {
         _position = position;
         _enemyConfig = enemyConfig;
@@ -35,7 +35,7 @@ public class EnemyFactory : IDisposable
 
     private Enemy Create()
     {
-        return _objectResolver.Instantiate(_enemyConfig.EnemyPrefab, _position, Quaternion.identity);
+        return _container.Instantiate(_enemyConfig.EnemyPrefab, _position, Quaternion.identity);
     }
 
     private void Get(Enemy enemy)

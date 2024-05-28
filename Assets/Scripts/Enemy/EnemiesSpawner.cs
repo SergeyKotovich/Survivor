@@ -10,7 +10,7 @@ public class EnemiesSpawner : MonoBehaviour
 {
     [SerializeField] private SpawnParameters[] _spawnParameters;
     [SerializeField] private int _delayBetweenSpawn;
-    
+
     private EnemyFactory _enemyFactory;
     private IPublisher<EnemySpawnedMessage> _enemySpawnedPublisher;
     private IDisposable _subscriber;
@@ -18,7 +18,7 @@ public class EnemiesSpawner : MonoBehaviour
     private IPublisher<AllEnemiesSpawnedMessage> _allEnemiesSpawnedPublisher;
 
     [Inject]
-    public void Construct (EnemyFactory enemyFactory,
+    public void Construct(EnemyFactory enemyFactory,
         IPublisher<EnemySpawnedMessage> enemySpawnedPublisher,
         ISubscriber<PlayerDiedMessage> playerDiedSubscriber,
         IPublisher<AllEnemiesSpawnedMessage> allEnemiesSpawnedPublisher)
@@ -26,27 +26,31 @@ public class EnemiesSpawner : MonoBehaviour
         _allEnemiesSpawnedPublisher = allEnemiesSpawnedPublisher;
         _enemySpawnedPublisher = enemySpawnedPublisher;
         _enemyFactory = enemyFactory;
-        _subscriber = playerDiedSubscriber.Subscribe( _ =>_playerAlive= false);
+        _subscriber = playerDiedSubscriber.Subscribe(_ => _playerAlive = false);
     }
 
     public async UniTask SpawnEnemies(int coefficient)
     {
         foreach (var spawnParameters in _spawnParameters)
         {
-            for (int i = 0; i < spawnParameters.CountEnemy*coefficient; i++)
+            for (int i = 0; i < spawnParameters.CountEnemy * coefficient; i++)
             {
+                var randomVector = Random.insideUnitSphere;
+                randomVector.y = 0;
+                var position = spawnParameters.Point.position + spawnParameters.Radius * randomVector;
+                
+                await UniTask.Delay(_delayBetweenSpawn);
+                
                 if (!_playerAlive)
                 {
                     return;
                 }
-                var randomVector = Random.insideUnitSphere;
-                randomVector.y = 0;
-                var position = spawnParameters.Point.position + spawnParameters.Radius * randomVector;
-                await UniTask.Delay(_delayBetweenSpawn);
-                var enemy = _enemyFactory.GetEnemy(spawnParameters.EnemyConfig, position);
+                
+                var enemy = _enemyFactory.Spawn(spawnParameters.EnemyConfig, position);
                 _enemySpawnedPublisher.Publish(new EnemySpawnedMessage(enemy));
             }
         }
+
         _allEnemiesSpawnedPublisher.Publish(new AllEnemiesSpawnedMessage());
     }
 

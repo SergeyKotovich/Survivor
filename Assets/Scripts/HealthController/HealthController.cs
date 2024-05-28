@@ -1,7 +1,7 @@
-
 using System;
 using MessagePipe;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class HealthController : IHealthHandler, IHealth
 {
@@ -9,10 +9,11 @@ public class HealthController : IHealthHandler, IHealth
     public event Action Died;
     public float Health => _health;
     public float MaxHealth => _maxHealth;
-    
+
     private float _health;
-    private float _maxHealth;
-    
+    private readonly float _maxHealth;
+    private bool _isDead => Health <= 0;
+
     public HealthController(float health)
     {
         _health = health;
@@ -21,7 +22,12 @@ public class HealthController : IHealthHandler, IHealth
 
     public void TakeDamage(float damage)
     {
-        if (damage>=_health)
+        Assert.IsFalse(_isDead , " You are trying to deal damage to a died Character");
+        if (_isDead)
+        {
+            return;
+        }
+        if (damage >= _health)
         {
             _health = 0;
         }
@@ -29,7 +35,7 @@ public class HealthController : IHealthHandler, IHealth
         {
             _health -= damage;
         }
-        
+
         HealthChanged?.Invoke();
         if (_health == 0)
         {

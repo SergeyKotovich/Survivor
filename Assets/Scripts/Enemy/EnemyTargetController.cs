@@ -11,31 +11,44 @@ public class EnemyTargetController : MonoBehaviour
     
     [SerializeField] private NavMeshAgent _navMeshAgent;
     [SerializeField] private float _minDistance = 1.5f;
+
+    private bool _wasTargetNearby;
+    private bool _hasTarget;
     
     private IMovable _target;
-    private Rigidbody _rigidbody;
-    
+
     public void Initialize(float speed)
     {
         _navMeshAgent.speed = speed;
-        _rigidbody = GetComponent<Rigidbody>();
     }
 
     private void Update()
     {
         if (_target!=null)
         {
-            transform.LookAt(_target.Position);
-            if (IsTargetNearby())
+            if (_hasTarget)
             {
-                TargetNearby?.Invoke();
-                return;
+                transform.LookAt(_target.Position);
+                _navMeshAgent.destination = _target.Position;
+            }
+            
+            var isTargetNearby = IsTargetNearby();
+            var isTargetNearbyChanged = _wasTargetNearby != isTargetNearby;
+            if (!isTargetNearbyChanged)
+            {
+               return;
             }
 
-            if (!IsTargetNearby())
+            if (isTargetNearby)
+            {
+                TargetNearby?.Invoke();
+            }
+            else
             {
                 TargetFar?.Invoke();
             }
+
+            _wasTargetNearby = isTargetNearby;
         }
     }
     
@@ -43,6 +56,8 @@ public class EnemyTargetController : MonoBehaviour
     {
         _target = target;
         _navMeshAgent.destination = _target.Position;
+        _navMeshAgent.isStopped = false;
+        _hasTarget = true;
     }
 
     private bool IsTargetNearby()
@@ -55,7 +70,7 @@ public class EnemyTargetController : MonoBehaviour
         if (_navMeshAgent.isActiveAndEnabled)
         {
             _navMeshAgent.isStopped = true;
-            _rigidbody.isKinematic = true;
+            _hasTarget = false;
         }
     }
 
