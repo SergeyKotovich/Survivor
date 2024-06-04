@@ -15,9 +15,13 @@ public class EnemyFactory : IDisposable
     private readonly ObjectPool<Enemy> _enemyPool;
     private EnemyConfig _enemyConfig;
     private Vector3 _position;
+    private CoinsFactory _coinsFactory;
 
-    public EnemyFactory(IObjectResolver container, ISubscriber<EnemyDiedMessage> enemyDiedSubscriber)
+    public EnemyFactory(IObjectResolver container,
+        ISubscriber<EnemyDiedMessage> enemyDiedSubscriber, 
+         CoinsFactory coinsFactory)
     {
+        _coinsFactory = coinsFactory;
         _container = container;
         _subscriber =  enemyDiedSubscriber.Subscribe(enemyDiedMessage => OnEnemyDied(enemyDiedMessage));
         _enemyPool = new ObjectPool<Enemy>(Create, Get, Release);
@@ -53,7 +57,9 @@ public class EnemyFactory : IDisposable
     private async UniTask OnEnemyDied(EnemyDiedMessage enemyDiedMessage)
     {
         await UniTask.Delay(_enemyConfig.DelayAfterDeath);
+        var lastEnemyPosition = enemyDiedMessage.Enemy.transform.position;
         _enemyPool.Release(enemyDiedMessage.Enemy);
+        _coinsFactory.Spawn(lastEnemyPosition);
     }
 
 

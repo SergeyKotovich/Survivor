@@ -6,15 +6,15 @@ public class Wallet : IDisposable
 {
     public event Action<float> CountMoneyChanged;
     private float _currentCountMoney;
-    private IDisposable _subscriber;
+    private readonly IDisposable _subscriber;
 
-    public Wallet(ISubscriber<CountMoneyChangedMessage> countMoneyChangedSubscriber)
+    public Wallet(ISubscriber<MoneyCollectedMessage> moneyCollectedSubscriber)
     {
-        _subscriber = countMoneyChangedSubscriber.Subscribe(AddMoney);
+        _subscriber = moneyCollectedSubscriber.Subscribe(AddMoney);
     }
-    private void AddMoney(CountMoneyChangedMessage countMoneyChanged)
+    private void AddMoney(MoneyCollectedMessage moneyCollected)
     {
-        _currentCountMoney += countMoneyChanged.Money;
+        _currentCountMoney += moneyCollected.Money.CountMoney;
         CountMoneyChanged?.Invoke(_currentCountMoney);
     }
 

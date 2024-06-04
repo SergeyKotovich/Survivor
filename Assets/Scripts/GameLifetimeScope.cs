@@ -19,9 +19,10 @@ public class GameLifetimeScope : LifetimeScope
         RegisterInput(builder);
         
         builder.Register<EnemyFactory>(Lifetime.Singleton);
-        builder.Register<Wallet>(Lifetime.Singleton);
         builder.Register<CoinsFactory>(Lifetime.Singleton);
-
+        
+        builder.Register<Wallet>(Lifetime.Singleton);
+        
         builder.RegisterInstance(_enemiesController).AsImplementedInterfaces();
         builder.RegisterInstance(_enemiesSpawner);
         builder.RegisterInstance(_playerController).AsImplementedInterfaces();
@@ -47,7 +48,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterMessageBroker<AllEnemiesDiedMessage>(options);
 
         builder.RegisterMessageBroker<BreakFinishedMessage>(options);
-        builder.RegisterMessageBroker<CountMoneyChangedMessage>(options);
+        builder.RegisterMessageBroker<MoneyCollectedMessage>(options);
         
         builder.RegisterMessageBroker<PlayerDiedMessage>(options);
     }

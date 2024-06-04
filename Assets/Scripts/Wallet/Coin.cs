@@ -9,9 +9,4 @@ public class Coin : MonoBehaviour
     {
         transform.Rotate(new Vector3(0, 0, 2) * Time.deltaTime * _rotationSpeed);
     }
-
-    public void DestroyCoin()
-    {
-        Destroy(gameObject);
-    }
 }
