@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour, IBullet
 {
+    public int Speed => 40;
     public event Action<Bullet> BulletHit; 
     public Rigidbody Rigidbody { get; private set; }
-    public int Speed => 50;
+    
     public float Damage { get; private set; }
 
     private void Awake()

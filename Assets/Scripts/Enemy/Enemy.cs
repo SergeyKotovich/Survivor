@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private EnemyAttackController _enemyAttackController;
     [SerializeField] private EnemyCollisionHandler _enemyCollisionHandler;
     [SerializeField] private EnemyTargetController _enemyTargetController;
+    [SerializeField] private BloodController _bloodController;
 
     private HealthController _healthController;
     private StateMachine _stateMachine;
@@ -54,6 +55,7 @@ public class Enemy : MonoBehaviour
     private void TakeDamage(float damage)
     {
         _healthController.TakeDamage(damage);
+        _bloodController.ShowBlood();
     }
 
     private void EnterDeathState()
