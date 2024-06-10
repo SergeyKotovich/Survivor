@@ -22,7 +22,7 @@ public class TriggerHandler : MonoBehaviour
             {
                 var fuel = _inventory.GetFuel();
                 var bonfire = other.GetComponent<Bonfire>();
-                bonfire.AddFuel(fuel.AmountLight);
+                bonfire.TryAddFuel(fuel.AmountLight);
                 fuel.transform.DOScale(0.5f, 0);
                 fuel.transform.DOMove(other.transform.position, 1);
                 fuel.transform.DOScale(0, 1);

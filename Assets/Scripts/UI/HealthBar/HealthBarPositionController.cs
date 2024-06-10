@@ -6,9 +6,14 @@ public class HealthBarPositionController : MonoBehaviour
    [SerializeField] private Transform _healthBarRoot;
    [SerializeField] private RectTransform _healthBar;
 
-   private void Update()
+   private void Awake()
    {
-      var positionInScreenSpace = Camera.main.WorldToScreenPoint(_healthBarRoot.position);
-      _healthBar.position = positionInScreenSpace;
+      
    }
+
+ // private void Update()
+ // {
+ //    var positionInScreenSpace = Camera.main.WorldToScreenPoint(_healthBarRoot.position);
+ //    _healthBar.position = positionInScreenSpace;
+ // }
 }
