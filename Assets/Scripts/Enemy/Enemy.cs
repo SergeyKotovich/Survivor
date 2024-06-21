@@ -56,6 +56,7 @@ public class Enemy : MonoBehaviour
     {
         _healthController.TakeDamage(damage);
         _bloodController.ShowBlood();
+        _bloodController.SpawnBlood(transform.position);
     }
 
     private void EnterDeathState()

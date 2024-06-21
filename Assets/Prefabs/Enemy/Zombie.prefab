@@ -1421,7 +1421,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 6
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -6019,6 +6019,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _particleSystem: {fileID: 2403362511963306480}
+  _prefabBlood: {fileID: 2856768837335177585, guid: 2e1e22e23f5dfd44ba8a7fcc3d1c7eb3, type: 3}
+  _delay: 3000
 --- !u!1 &6448420678724550566
 GameObject:
   m_ObjectHideFlags: 0
