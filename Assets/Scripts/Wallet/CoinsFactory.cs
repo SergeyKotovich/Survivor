@@ -7,7 +7,7 @@ using VContainer.Unity;
 
 public class CoinsFactory : IDisposable
 {
-    private float _shift = 0.2f;
+    private float _shift = 0.25f;
     private readonly IObjectResolver _container;
     private readonly ObjectPool<Coin> _coinsPool;
     private readonly Coin _coinPrefab;

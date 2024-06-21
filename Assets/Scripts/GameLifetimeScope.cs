@@ -13,6 +13,7 @@ public class GameLifetimeScope : LifetimeScope
     [SerializeField] private WavesController _wavesController;
     [SerializeField] private ShopController _shopController;
     [SerializeField] private Coin _coinPrefab;
+    [SerializeField] private SoundsManager _soundsManager;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -30,6 +31,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterInstance(_wavesController);
         builder.RegisterInstance(_shopController).AsImplementedInterfaces();
         builder.RegisterInstance(_coinPrefab);
+        builder.RegisterInstance(_soundsManager);
 
         builder.RegisterEntryPoint<GameController>();
         
