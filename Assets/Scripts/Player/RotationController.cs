@@ -8,6 +8,7 @@ namespace Player
     public class RotationController : MonoBehaviour
     {
         private float _rotationSpeed = 720f;
+        private float _rotationSpeedToEnemy = 5f;
         private int _minDistance = 8;
         private Vector3 _lastDirection;
 
@@ -29,31 +30,46 @@ namespace Player
 
         private void Update()
         {
-            Rotate();
             if (_enemy != null)
             {
                 var target = _enemy.transform.position;
+                var isEnemyNearby  = Vector3.Distance(transform.position, target) < _minDistance;
 
-                var isEnemyNearby = Vector3.Distance(transform.position, target) < _minDistance;
                 if (isEnemyNearby)
                 {
-                    transform.LookAt(target);
+                    RotateTowardsEnemy(target);
                 }
+                else
+                {
+                    RotateBasedOnInput();
+                }
+            }
+            else
+            {
+                RotateBasedOnInput();
             }
         }
 
-        private void Rotate()
+        private void RotateTowardsEnemy(Vector3 target)
+        {
+            var direction = target - transform.position;
+            direction.y = 0;
+            var targetRotation = Quaternion.LookRotation(direction.normalized);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeedToEnemy * Time.deltaTime);
+        }
+
+        private void RotateBasedOnInput()
         {
             var input = _inputHandler.GetInput();
             var direction = new Vector3(input.x, 0, input.y);
+
             if (direction != Vector3.zero)
             {
                 _lastDirection = direction;
             }
 
             Quaternion toRotation = Quaternion.LookRotation(_lastDirection);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation,
-                _rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, _rotationSpeed * Time.deltaTime);
         }
 
         private void OnDestroy()
