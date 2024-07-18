@@ -1,4 +1,3 @@
-using System;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
@@ -44,20 +43,22 @@ public class Enemy : MonoBehaviour
 
         _enemyAttackController.Initialize(enemyConfig.Damage);
         _enemyTargetController.Initialize(enemyConfig.Speed);
-         
+
         if (_counter > 0)
         {
             _stateMachine.Enter<MoveToTargetState>();
         }
+
         _counter++;
     }
 
-    private void TakeDamage(float damage)
+    private async void TakeDamage(float damage)
     {
         _healthController.TakeDamage(damage);
         _bloodController.ShowBlood();
-        _bloodController.SpawnBlood(transform.position);
+        await _bloodController.SpawnBlood(transform.position);
     }
+
 
     private void EnterDeathState()
     {

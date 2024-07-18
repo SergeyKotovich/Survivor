@@ -8,7 +8,7 @@ namespace Player
     public class RotationController : MonoBehaviour
     {
         private float _rotationSpeed = 720f;
-        private float _rotationSpeedToEnemy = 5f;
+        private float _rotationSpeedToEnemy = 30f;
         private int _minDistance = 8;
         private Vector3 _lastDirection;
 

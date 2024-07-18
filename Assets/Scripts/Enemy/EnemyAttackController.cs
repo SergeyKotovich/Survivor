@@ -1,8 +1,15 @@
+using System;
 using UnityEngine;
 
 public class EnemyAttackController : MonoBehaviour
 {
     private int _damage;
+    private BoxCollider _boxCollider;
+
+    private void Awake()
+    {
+        _boxCollider = GetComponent<BoxCollider>();
+    }
 
     public void Initialize(int damage)
     {

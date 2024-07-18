@@ -7,20 +7,20 @@ using VContainer;
 public class ShootingController : MonoBehaviour, IAtackImprovable
 {
     public event Action CanShoot;
-    public event Action<float, float> AttackSpeedUpdated; 
-    public event Action<float, float> AttackRangeUpdated; 
+    public event Action<float, float> AttackSpeedUpdated;
+    public event Action<float, float> AttackRangeUpdated;
 
-    private float _attackRange ;
-    private float _cooldownAfterShot ;
+    private float _attackRange;
+    private float _cooldownAfterShot;
     private float _currentTime;
-    
+
     private ITarget _targetController;
     private PlayerConfig _playerConfig;
 
     private void Start()
     {
-        AttackSpeedUpdated?.Invoke(_cooldownAfterShot, _cooldownAfterShot-_playerConfig.AttackImprovementStep);
-        AttackRangeUpdated?.Invoke(_attackRange, _attackRange+_playerConfig.AttackImprovementStep);
+        AttackSpeedUpdated?.Invoke(_cooldownAfterShot, _cooldownAfterShot - _playerConfig.AttackImprovementStep);
+        AttackRangeUpdated?.Invoke(_attackRange, _attackRange + _playerConfig.AttackImprovementStep);
     }
 
     public void Initialize(ITarget targetController, PlayerConfig playerConfig)
@@ -30,21 +30,22 @@ public class ShootingController : MonoBehaviour, IAtackImprovable
         _cooldownAfterShot = playerConfig.AttackSpeed;
         _attackRange = playerConfig.AttackRange;
     }
-    
+
     public void Update()
     {
-        _currentTime += Time.deltaTime;
-       
         if (!_targetController.HasTarget())
         {
             return;
         }
+
         var nearestEnemy = _targetController.GetTarget();
-        if (Vector3.Distance(transform.position, nearestEnemy.transform.position)>_attackRange)
+        _currentTime += Time.deltaTime;
+        if (Vector3.Distance(transform.position, nearestEnemy.transform.position) > _attackRange)
         {
             return;
         }
-        if (_currentTime>=_cooldownAfterShot)
+
+        if (_currentTime >= _cooldownAfterShot)
         {
             CanShoot?.Invoke();
             _currentTime = 0;
@@ -54,12 +55,12 @@ public class ShootingController : MonoBehaviour, IAtackImprovable
     public void ImproveAttackSpeed()
     {
         _cooldownAfterShot -= _playerConfig.AttackImprovementStep;
-        AttackSpeedUpdated?.Invoke(_cooldownAfterShot, _cooldownAfterShot - _playerConfig.AttackImprovementStep); 
+        AttackSpeedUpdated?.Invoke(_cooldownAfterShot, _cooldownAfterShot - _playerConfig.AttackImprovementStep);
     }
 
     public void ImproveAttackRange()
     {
         _attackRange += _playerConfig.AttackImprovementStep;
-        AttackRangeUpdated?.Invoke(_attackRange, _attackRange+_playerConfig.AttackImprovementStep);
+        AttackRangeUpdated?.Invoke(_attackRange, _attackRange + _playerConfig.AttackImprovementStep);
     }
 }

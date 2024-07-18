@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
 using UnityEngine;
@@ -23,7 +22,7 @@ public class EnemyFactory : IDisposable
     {
         _coinsFactory = coinsFactory;
         _container = container;
-        _subscriber =  enemyDiedSubscriber.Subscribe(enemyDiedMessage => OnEnemyDied(enemyDiedMessage));
+        _subscriber =  enemyDiedSubscriber.Subscribe(enemyDiedMessage => HandleEnemyDiedAsync(enemyDiedMessage).Forget());
         _enemyPool = new ObjectPool<Enemy>(Create, Get, Release);
     }
 
@@ -54,6 +53,11 @@ public class EnemyFactory : IDisposable
         enemy.transform.rotation = Quaternion.identity;
     }
 
+    private async UniTask HandleEnemyDiedAsync(EnemyDiedMessage enemyDiedMessage)
+    {
+        await OnEnemyDied(enemyDiedMessage);
+    }
+
     private async UniTask OnEnemyDied(EnemyDiedMessage enemyDiedMessage)
     {
         await UniTask.Delay(_enemyConfig.DelayAfterDeath);
@@ -61,7 +65,6 @@ public class EnemyFactory : IDisposable
         _enemyPool.Release(enemyDiedMessage.Enemy);
         _coinsFactory.Spawn(lastEnemyPosition);
     }
-
 
     public void Dispose()
     {
