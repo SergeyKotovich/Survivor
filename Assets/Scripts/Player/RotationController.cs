@@ -68,9 +68,13 @@ namespace Player
                 _lastDirection = direction;
             }
 
-            Quaternion toRotation = Quaternion.LookRotation(_lastDirection);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, _rotationSpeed * Time.deltaTime);
+            if (_lastDirection != Vector3.zero)
+            {
+                Quaternion toRotation = Quaternion.LookRotation(_lastDirection);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, _rotationSpeed * Time.deltaTime);
+            }
         }
+
 
         private void OnDestroy()
         {
