@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
@@ -18,13 +19,13 @@ public class WavesController : MonoBehaviour
         _enemiesSpawner = enemiesSpawner;
         _subscribers = breakFinishedSubscriber.Subscribe(_ => StartSpawn());
     }
-    
+
     public async void StartSpawn()
     {
         _coefficient++;
         await _enemiesSpawner.SpawnEnemies(_coefficient);
     }
-   
+
     public void OnDestroy()
     {
         _subscribers.Dispose();

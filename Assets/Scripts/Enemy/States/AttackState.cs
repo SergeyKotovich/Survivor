@@ -40,7 +40,6 @@ public class AttackState : MonoBehaviour, IState
 
     public void OnEnter()
     {
-        Debug.Log("attack");
         _enemyTargetController.ResetTarget();
         _animationController.ShowAttack();
         _soundsManager.PlayZombieAttack();

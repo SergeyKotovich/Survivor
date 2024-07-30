@@ -32,7 +32,6 @@ public class MoveToTargetState : MonoBehaviour, IState
 
     public void OnEnter()
     {
-        Debug.Log("Move");
         _enemyTargetController.SetTarget(_target);
         _animationController.ShowWalking();
         _collider.enabled = true;
