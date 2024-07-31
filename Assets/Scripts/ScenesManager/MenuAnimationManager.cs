@@ -8,27 +8,46 @@ public class MenuAnimationManager : MonoBehaviour
     [SerializeField] private GameObject _mainMenu;
     [SerializeField] private GameObject _settingsMenu;
     [SerializeField] private GameObject _leaderBoard;
-
+    [SerializeField] private MenuSettings _mainMenuSettings;
+    [SerializeField] private MenuSettings _menuSettings;
+    
     private void Awake()
     {
         ShowMainMenu();
     }
 
-    private void ShowMainMenu()
+    [UsedImplicitly]
+    public void ShowMainMenu()
     {
-        _mainMenu.transform.DOMoveX(550, 0.3f)
-            .OnComplete(() => _mainMenu.transform.DOMoveX(400, 0.3f));
+        Show(_mainMenu, _mainMenuSettings.AverageValue, _mainMenuSettings.XPositionToShow, _mainMenuSettings.Duration);
     }
 
     [UsedImplicitly]
     public void HideMainMenu()
     {
-        _mainMenu.transform.DOMoveX(-350, 0.3f);
+        _mainMenu.transform.DOMoveX(_mainMenuSettings.XPositionToHide, _mainMenuSettings.Duration);
     }
 
+    [UsedImplicitly]
     public void ShowSettingMenu()
     {
-        _settingsMenu.transform.DOMoveX(550,0.3f)
-            .OnComplete(() => _mainMenu.transform.DOMoveX(400, 0.3f));
+        Show(_settingsMenu, _menuSettings.AverageValue, _menuSettings.XPositionToShow, _menuSettings.Duration);
+    }
+
+    [UsedImplicitly]
+    public void HideSettingMenu()
+    {
+        Hide(_settingsMenu, _menuSettings.XPositionToHide, _menuSettings.Duration);
+    }
+
+    private void Show(GameObject menu, int averageValue, int xPositionToShow, float duration)
+    {
+        menu.transform.DOMoveX(averageValue, duration)
+            .OnComplete(() => menu.transform.DOMoveX(xPositionToShow, duration));
+    }
+
+    private void Hide(GameObject menu, int endValue, float duration)
+    {
+        menu.transform.DOMoveX(endValue, duration);
     }
 }
