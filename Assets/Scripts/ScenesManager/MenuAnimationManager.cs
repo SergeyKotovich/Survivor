@@ -1,7 +1,7 @@
-using System;
 using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine;
+
 
 public class MenuAnimationManager : MonoBehaviour
 {
