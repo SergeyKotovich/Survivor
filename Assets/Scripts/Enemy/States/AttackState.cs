@@ -11,12 +11,10 @@ public class AttackState : MonoBehaviour, IState
     private StateMachine _stateMachine;
 
     private IDisposable _subscriber;
-    private SoundsManager _soundsManager;
 
     [Inject]
-    public void Construct(ISubscriber<PlayerDiedMessage> playerDiedSubscriber, SoundsManager soundsManager)
+    public void Construct(ISubscriber<PlayerDiedMessage> playerDiedSubscriber)
     {
-        _soundsManager = soundsManager;
         _subscriber = playerDiedSubscriber.Subscribe(_ => EnterWaitingState());
     }
 
@@ -42,7 +40,6 @@ public class AttackState : MonoBehaviour, IState
     {
         _enemyTargetController.ResetTarget();
         _animationController.ShowAttack();
-        _soundsManager.PlayZombieAttack();
     }
 
     private void OnDestroy()

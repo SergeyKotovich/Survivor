@@ -1,22 +1,55 @@
+using System;
 using UnityEngine;
 
 public class SoundsManager : MonoBehaviour
 {
-    [SerializeField] private AudioSource _playerAudioSource;
-    [SerializeField] private AudioSource _zombieAudioSource;
+    public static SoundsManager Instance;
+    
+    [SerializeField] private AudioSource _music;
+    [SerializeField] private AudioSource _zombieEffects;
+    [SerializeField] private AudioSource _playerEffects;
 
+    [SerializeField] private AudioClip _menuMusic;
+    [SerializeField] private AudioClip _gameMusic;
     [SerializeField] private AudioClip _shot;
     [SerializeField] private AudioClip _zombieAttack;
-    
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        PlayMenuMusic();
+    }
+
     public void PlayShot()
     {
-        _playerAudioSource.clip = _shot;
-        _playerAudioSource.Play();
+        _playerEffects.clip = _shot;
+        _playerEffects.Play();
+    }
+
+    public void PlayMusicGame()
+    {
+        _music.clip = _gameMusic;
+        _music.Play();
     }
 
     public void PlayZombieAttack()
     {
-        _zombieAudioSource.clip = _zombieAttack;
-        _zombieAudioSource.Play();
+        _zombieEffects.clip = _zombieAttack;
+        _zombieEffects.Play();
+    }
+
+    private void PlayMenuMusic()
+    {
+        _music.clip = _menuMusic;
+        _music.Play();
+        _music.loop = true;
     }
 }

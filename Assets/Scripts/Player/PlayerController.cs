@@ -22,14 +22,11 @@ public class PlayerController : MonoBehaviour, IMovable, IImprovable
 
     private HealthController _healthController;
     private IPublisher<PlayerDiedMessage> _playerDiedPublisher;
-    private SoundsManager _soundsManager;
 
     [Inject]
     public void Construct(IPublisher<PlayerDiedMessage> playerDiedPublisher,
-        IPublisher<MoneyCollectedMessage> moneyCollectedPublisher,
-        SoundsManager soundsManager)
+        IPublisher<MoneyCollectedMessage> moneyCollectedPublisher)
     {
-        _soundsManager = soundsManager;
         _playerDiedPublisher = playerDiedPublisher;
         _healthController = new HealthController(_playerConfig.Health);
         _healthController.Died += OnPlayerDied;
@@ -78,7 +75,7 @@ public class PlayerController : MonoBehaviour, IMovable, IImprovable
     private void Shoot()
     {
         _weapon.Shoot();
-        _soundsManager.PlayShot();
+        SoundsManager.Instance.PlayShot();
     }
 
     private void OnPlayerDied()

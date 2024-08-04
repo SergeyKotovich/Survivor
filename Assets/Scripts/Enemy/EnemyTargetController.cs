@@ -71,4 +71,10 @@ public class EnemyTargetController : MonoBehaviour
             _navMeshAgent.isStopped = true;
         }
     }
+
+    public void Stop()
+    {
+        _target = null;
+        _navMeshAgent.isStopped = true;
+    }
 }

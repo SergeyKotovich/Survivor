@@ -24,7 +24,7 @@ public class DeathState : MonoBehaviour, IState
 
     public void OnEnter()
     {
-        _enemyTargetController.ResetTarget();
+        _enemyTargetController.Stop();
         _rigidbody.isKinematic = true;
         _collider.enabled = false;
         _animationController.ShowDeath();

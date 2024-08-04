@@ -21,6 +21,7 @@ public class GameController : IStartable, IDisposable
     public void Start()
     {
         _wavesController.StartSpawn();
+        SoundsManager.Instance.PlayMusicGame();
     }
 
     private void EndGame()
