@@ -20,6 +20,7 @@ public class TriggerHandler : MonoBehaviour
         {
            var coin = other.GetComponent<Coin>();
             _moneyCollectedPublisher.Publish(new MoneyCollectedMessage(coin));
+            SoundsManager.Instance.PlayCoinCollect();
         }
     }
 }

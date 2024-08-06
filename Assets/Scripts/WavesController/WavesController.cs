@@ -24,6 +24,7 @@ public class WavesController : MonoBehaviour
     {
         _coefficient++;
         await _enemiesSpawner.SpawnEnemies(_coefficient);
+        SoundsManager.Instance.PlayStartWave();
     }
 
     public void OnDestroy()

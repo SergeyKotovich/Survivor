@@ -27,6 +27,7 @@ public class GameController : IStartable, IDisposable
     private void EndGame()
     {
         _uiController.ShowDeathScreen();
+        SoundsManager.Instance.PlayEndGame();
     }
 
     public void Dispose()

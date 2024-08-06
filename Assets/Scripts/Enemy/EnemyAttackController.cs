@@ -15,6 +15,7 @@ public class EnemyAttackController : MonoBehaviour
         {
             var player = other.GetComponent<PlayerController>();
             player.TakeDamage(_damage);
+            SoundsManager.Instance.PlayZombieAttack();
         }
     }
 }

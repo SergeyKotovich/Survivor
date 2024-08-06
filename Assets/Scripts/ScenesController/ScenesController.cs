@@ -30,7 +30,6 @@ public class ScenesController : MonoBehaviour
     public void StartGame()
     {
         StartGameAsync().Forget();
-        Debug.Log("start");
     }
 
     private async UniTask StartGameAsync()
