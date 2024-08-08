@@ -7,7 +7,7 @@ public class ScenesController : MonoBehaviour
 {
     public static ScenesController Instance;
     public UnityEvent<float> OnProgressUpdate;
-    
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -32,9 +32,13 @@ public class ScenesController : MonoBehaviour
         StartGameAsync().Forget();
     }
 
-    public void ReturnToMenu()
+    public void ExitGame()
     {
-        SceneManager.LoadScene(GlobalConstants.MENU_SCENE_INDEX);
+        Application.Quit();
+        
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 
     private async UniTask StartGameAsync()

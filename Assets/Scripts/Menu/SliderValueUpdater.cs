@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class SliderValueUpdater : MonoBehaviour
 {
-    public UnityEvent<float> OnTextUpdated;
     [SerializeField] private TextMeshProUGUI _label;
     [SerializeField] private Slider _slider;
 
@@ -19,7 +18,6 @@ public class SliderValueUpdater : MonoBehaviour
     private void UpdateText(float value)
     {
         _label.text = value.ToString("0.0");
-        OnTextUpdated.Invoke(value);
     }
 
     private void OnDestroy()
