@@ -10,6 +10,8 @@ TagManager:
   - Firewood
   - SmallFirewood
   - Bonfire
+  - End
+  - Coin
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - Water
   - UI
   - Player
-  - 
+  - PlayerDeathAnimation
   - 
   - 
   - 

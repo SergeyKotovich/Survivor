@@ -15,7 +15,11 @@ public class SoundsManager : MonoBehaviour
     [SerializeField] private AudioClip _shot;
     [SerializeField] private AudioClip _zombieAttack;
     [SerializeField] private AudioClip _coinCollect;
-    private int _currentIndex;
+
+    private int _currentMenuIndex;
+    private int _currentGameIndex;
+    private bool _gameFinished;
+    private bool _isMenu;
 
     private void Awake()
     {
@@ -34,12 +38,19 @@ public class SoundsManager : MonoBehaviour
 
     private void Update()
     {
-        if (!_music.isPlaying)
+        if (!_music.isPlaying && !_gameFinished)
         {
-            SetNextTrack();
+            if (_isMenu)
+            {
+                SetNextMenuTrack();
+            }
+            else
+            {
+                SetNextGameTrack();
+            }
         }
     }
-    
+
     public void PlayCoinCollect()
     {
         PlayClip(_effects, _coinCollect);
@@ -52,8 +63,10 @@ public class SoundsManager : MonoBehaviour
 
     public void PlayMusicGame()
     {
-        _music.clip = _gameMusic[_currentIndex];
-        _music.loop = true;
+        _isMenu = false;
+        _gameFinished = false;
+        _currentGameIndex = Random.Range(0, _gameMusic.Length);
+        _music.clip = _gameMusic[_currentGameIndex];
         _music.Play();
     }
 
@@ -64,6 +77,7 @@ public class SoundsManager : MonoBehaviour
 
     public void PlayEndGame()
     {
+        _gameFinished = true;
         _music.clip = _endMusic;
         _music.loop = false;
         _music.Play();
@@ -72,26 +86,33 @@ public class SoundsManager : MonoBehaviour
     public void PlayStartWave()
     {
         PlayClip(_effects, _startWave);
+        _gameFinished = false;
     }
 
-    private void SetNextTrack()
+    private void SetNextGameTrack()
     {
-        _music.clip = _gameMusic[_currentIndex];
+        _currentGameIndex = (_currentGameIndex + 1) % _gameMusic.Length;
+        _music.clip = _gameMusic[_currentGameIndex];
         _music.Play();
-        _currentIndex = (_currentIndex + 1) % _gameMusic.Length;
     }
+
+    private void SetNextMenuTrack()
+    {
+        _currentMenuIndex = (_currentMenuIndex + 1) % _menuMusic.Length;
+        _music.clip = _menuMusic[_currentMenuIndex];
+        _music.Play();
+    }
+
     private void PlayClip(AudioSource source, AudioClip clip)
     {
         source.PlayOneShot(clip);
     }
+
     private void PlayMenuMusic()
     {
-        if (_menuMusic.Length > 0)
-        {
-            var randomIndex = Random.Range(0, _menuMusic.Length);
-            _music.clip = _menuMusic[randomIndex];
-            _music.loop = true;
-            _music.Play();
-        }
+        _isMenu = true;
+        _currentMenuIndex = Random.Range(0, _menuMusic.Length);
+        _music.clip = _menuMusic[_currentMenuIndex];
+        _music.Play();
     }
 }

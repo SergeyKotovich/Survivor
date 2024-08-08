@@ -32,10 +32,14 @@ public class ScenesController : MonoBehaviour
         StartGameAsync().Forget();
     }
 
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene(GlobalConstants.MENU_SCENE_INDEX);
+    }
+
     private async UniTask StartGameAsync()
     {
-        var startSceneIndex = 1;
-        var operation = SceneManager.LoadSceneAsync(startSceneIndex);
+        var operation = SceneManager.LoadSceneAsync(GlobalConstants.GAME_SCENE_INDEX);
         while (!operation.isDone)
         {
             OnProgressUpdate?.Invoke(operation.progress);
