@@ -13,16 +13,16 @@ public class GameLifetimeScope : LifetimeScope
     [SerializeField] private WavesController _wavesController;
     [SerializeField] private ShopController _shopController;
     [SerializeField] private Coin _coinPrefab;
-
+    
     protected override void Configure(IContainerBuilder builder)
     {
         RegisterInput(builder);
         
         builder.Register<EnemyFactory>(Lifetime.Singleton);
         builder.Register<CoinsFactory>(Lifetime.Singleton);
-        
+
         builder.Register<Wallet>(Lifetime.Singleton);
-        
+
         builder.RegisterInstance(_enemiesController).AsImplementedInterfaces();
         builder.RegisterInstance(_enemiesSpawner);
         builder.RegisterInstance(_playerController).AsImplementedInterfaces();

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using TMPro;
 using UnityEngine.SceneManagement;
 
 namespace SlimUI.ModernMenu{
@@ -68,7 +67,7 @@ namespace SlimUI.ModernMenu{
         public GameObject loadingMenu;
 		[Tooltip("The loading bar Slider UI element in the Loading Screen")]
         public Slider loadingBar;
-        public TMP_Text loadPromptText;
+        public Text loadPromptText;
 		public KeyCode userPromptKey;
 
 		[Header("SFX")]

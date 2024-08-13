@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour, IMovable, IImprovable
     public IHealth HealthController => _healthController;
     public IAtackImprovable ShootingController => _shootingController;
     public ISpeedImprovable MovementController => _playerMovementController;
-    public IDamageImprovable Weapon => _weapon;
+    public IImprovementBrightnessTorch Torch => _torch;
 
     [SerializeField] private PlayerMovementController _playerMovementController;
     [SerializeField] private PlayerConfig _playerConfig;
@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour, IMovable, IImprovable
     [SerializeField] private PlayerTargetController _playerTargetController;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private TriggerHandler _triggerHandler;
+    [SerializeField] private Torch _torch;
 
     private HealthController _healthController;
     private IPublisher<PlayerDiedMessage> _playerDiedPublisher;
@@ -40,6 +41,7 @@ public class PlayerController : MonoBehaviour, IMovable, IImprovable
         _shootingController.Initialize(_playerTargetController, _playerConfig);
         _weapon.Initialize(_playerConfig);
         _triggerHandler.Initialize(_inventory, moneyCollectedPublisher);
+        _torch.Initialize(_playerConfig);
     }
 
     public void TakeDamage(float damage)
@@ -50,6 +52,7 @@ public class PlayerController : MonoBehaviour, IMovable, IImprovable
     public void Heal()
     {
         _healthController.Heal();
+        SoundsManager.Instance.PlayHealSound();
     }
 
     public void ImproveAttackSpeed()
@@ -67,9 +70,9 @@ public class PlayerController : MonoBehaviour, IMovable, IImprovable
         _playerMovementController.ImproveRunningSpeed();
     }
 
-    public void ImproveDamage()
+    public void ImproveBrightnessTorch()
     {
-        _weapon.ImproveDamage();
+        _torch.ImproveBrightnessTorch();
     }
 
     private void Shoot()

@@ -12,6 +12,7 @@ TagManager:
   - Bonfire
   - End
   - Coin
+  - Coins
   layers:
   - Default
   - TransparentFX

@@ -15,6 +15,9 @@ public class SoundsManager : MonoBehaviour
     [SerializeField] private AudioClip _shot;
     [SerializeField] private AudioClip _zombieAttack;
     [SerializeField] private AudioClip _coinCollect;
+    [SerializeField] private AudioClip _improvement;
+    [SerializeField] private AudioClip _heal;
+    [SerializeField] private AudioClip _notEnoughMoney;
 
     private int _currentMenuIndex;
     private int _currentGameIndex;
@@ -49,6 +52,21 @@ public class SoundsManager : MonoBehaviour
                 SetNextGameTrack();
             }
         }
+    }
+
+    public void PlayImprovementsSound()
+    {
+        PlayClip(_effects, _improvement);
+    }
+
+    public void PlayNotEnoughMoney()
+    {
+        PlayClip(_effects, _notEnoughMoney);
+    }
+
+    public void PlayHealSound()
+    {
+        PlayClip(_effects, _heal);
     }
 
     public void PlayCoinCollect()

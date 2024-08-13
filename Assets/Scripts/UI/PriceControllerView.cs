@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using VContainer;
@@ -8,7 +7,7 @@ public class PriceControllerView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _priceAttackSpeed;
     [SerializeField] private TextMeshProUGUI _priceAttackRange;
     [SerializeField] private TextMeshProUGUI _priceRunningSpeed;
-    [SerializeField] private TextMeshProUGUI _priceDamage;
+    [SerializeField] private TextMeshProUGUI _priceBrightness;
     [SerializeField] private TextMeshProUGUI _priceHeal;
     private IPrice _shopController;
 
@@ -37,7 +36,7 @@ public class PriceControllerView : MonoBehaviour
     }
     private void UpdatePriceDamage(int price)
     {
-        _priceDamage.text = price.ToString();
+        _priceBrightness.text = price.ToString();
     }
     private void UpdatePriceHeal(int price)
     {

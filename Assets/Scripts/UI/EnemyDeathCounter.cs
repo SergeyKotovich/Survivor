@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using MessagePipe;
 using TMPro;
 using UnityEngine;
-using VContainer;
 
 public class EnemyDeathCounter : MonoBehaviour, ICounter
 {

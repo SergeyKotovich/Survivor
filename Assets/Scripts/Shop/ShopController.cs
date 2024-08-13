@@ -33,7 +33,7 @@ public class ShopController : MonoBehaviour, IPrice
         _attackSpeedImprovementCallback = playerController.ImproveAttackSpeed;
         _attackRangeImprovementCallBack = playerController.ImproveAttackRange;
         _runningSpeedImprovementCallBack = playerController.ImproveRunningSpeed;
-        _damageImprovementCallBack = playerController.ImproveDamage;
+        _damageImprovementCallBack = playerController.ImproveBrightnessTorch;
         _healCallBack = playerController.Heal;
         _wallet = wallet;
     }

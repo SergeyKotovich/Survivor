@@ -2,9 +2,8 @@ using System;
 using UnityEngine;
 using VContainer;
 
-public class Weapon : MonoBehaviour, IWeapon, IDamageImprovable
+public class Weapon : MonoBehaviour, IWeapon
 {
-    public event Action<float, float> DamageUpdated;
     [SerializeField] private BulletsPool _bulletsPool;
     private float _damage;
     private PlayerConfig _playerConfig;
@@ -14,12 +13,7 @@ public class Weapon : MonoBehaviour, IWeapon, IDamageImprovable
         _playerConfig = playerConfig;
         _damage = _playerConfig.Damage;
     }
-
-    private void Start()
-    {
-        DamageUpdated?.Invoke(_damage, _damage + _playerConfig.DamageImprovementStep);
-    }
-
+    
     public void Shoot()
     {
         var bullet = _bulletsPool.GetBullet();
@@ -29,10 +23,5 @@ public class Weapon : MonoBehaviour, IWeapon, IDamageImprovable
         bullet.SetDamage(_damage);
         bullet.Rigidbody.velocity = (transform.forward * bullet.Speed);
     }
-
-    public void ImproveDamage()
-    {
-        _damage += _playerConfig.DamageImprovementStep;
-        DamageUpdated?.Invoke(_damage, _damage + _playerConfig.DamageImprovementStep);
-    }
+    
 }

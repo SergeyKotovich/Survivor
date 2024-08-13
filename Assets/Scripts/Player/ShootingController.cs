@@ -1,8 +1,5 @@
 using System;
-using JetBrains.Annotations;
-using MessagePipe;
 using UnityEngine;
-using VContainer;
 
 public class ShootingController : MonoBehaviour, IAtackImprovable
 {

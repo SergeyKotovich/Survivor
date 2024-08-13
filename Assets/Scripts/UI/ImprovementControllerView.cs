@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -10,24 +9,24 @@ public class ImprovementControllerView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _nextAttackRange;
     [SerializeField] private TextMeshProUGUI _currentRunningSpeed;
     [SerializeField] private TextMeshProUGUI _nextRunningSpeed;
-    [SerializeField] private TextMeshProUGUI _currentDamage;
-    [SerializeField] private TextMeshProUGUI _nextDamage;
+    [SerializeField] private TextMeshProUGUI _currentBrightness;
+    [SerializeField] private TextMeshProUGUI _nextBrightness;
 
     private IAtackImprovable _shootingController;
     private ISpeedImprovable _movementController;
-    private IDamageImprovable _weapon;
+    private IImprovementBrightnessTorch _torch;
 
     public void Initialize(IAtackImprovable shootingController, 
         ISpeedImprovable movementController,
-        IDamageImprovable weapon)
+        IImprovementBrightnessTorch torch)
     {
-        _weapon = weapon;
+        _torch = torch;
         _movementController = movementController;
         _shootingController = shootingController;
         _shootingController.AttackSpeedUpdated += UpdateAttackSpeed;
         _shootingController.AttackRangeUpdated += UpdateAttackRange;
         _movementController.RunningSpeedUpdated += UpdateRunningSpeed;
-        _weapon.DamageUpdated += UpdateDamage;
+        _torch.BrightnessTorchUpdated += UpdateBrightness;
     }
 
     private void UpdateTextValues(TextMeshProUGUI currentValueText, TextMeshProUGUI nextValueText, float currentValue, float nextValue)
@@ -49,9 +48,9 @@ public class ImprovementControllerView : MonoBehaviour
     {
         UpdateTextValues(_currentRunningSpeed,_nextRunningSpeed, currentValue,nextValue);
     }
-    private void UpdateDamage(float currentValue, float nextValue)
+    private void UpdateBrightness(float currentValue, float nextValue)
     {
-        UpdateTextValues(_currentDamage,_nextDamage, currentValue,nextValue);
+        UpdateTextValues(_currentBrightness,_nextBrightness, currentValue,nextValue);
     }
 
     private void OnDestroy()
@@ -59,6 +58,6 @@ public class ImprovementControllerView : MonoBehaviour
         _shootingController.AttackSpeedUpdated -= UpdateAttackSpeed;
         _shootingController.AttackRangeUpdated -= UpdateAttackRange;
         _movementController.RunningSpeedUpdated -= UpdateRunningSpeed;
-        _weapon.DamageUpdated -= UpdateDamage;
+        _torch.BrightnessTorchUpdated -= UpdateBrightness;
     }
 }

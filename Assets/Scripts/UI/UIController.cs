@@ -25,7 +25,7 @@ public class UIController : MonoBehaviour
         _breakControllerView.Initialize(allEnemyDiedSubscriber,breakFinishedPublisher, _kateNpcView.ShowMessages);
         _improvementControllerView.Initialize(playerController.ShootingController, 
             playerController.MovementController,
-            playerController.Weapon);
+            playerController.Torch);
     }
 
     public void ShowDeathScreen()

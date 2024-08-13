@@ -7,11 +7,12 @@ using VContainer.Unity;
 
 public class CoinsFactory : IDisposable
 {
-    private float _shift = 0.25f;
+    private const float _shift = 0.25f;
     private readonly IObjectResolver _container;
     private readonly ObjectPool<Coin> _coinsPool;
     private readonly Coin _coinPrefab;
     private readonly IDisposable _subscriber;
+    private const int _smallCoin = 10;
 
     public CoinsFactory(IObjectResolver container, Coin coinPrefab,
         ISubscriber<MoneyCollectedMessage> moneyCollectedSubscriber)
@@ -43,9 +44,18 @@ public class CoinsFactory : IDisposable
     {
         coin.gameObject.SetActive(false);
     }
+
     private void OnMoneyCollected(MoneyCollectedMessage moneyCollected)
     {
-        _coinsPool.Release(moneyCollected.Money);
+        if (moneyCollected.Money.CountMoney > _smallCoin)
+        {
+            UnityEngine.Object.Destroy(moneyCollected.Money.gameObject);
+        }
+        else
+        {
+            _coinsPool.Release(moneyCollected.Money);
+        }
+            
     }
 
 

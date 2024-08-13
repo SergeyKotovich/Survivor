@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Wallet : IDisposable
 {
+    public event Action OnNotEnoughMoney;
     public event Action<float> CountMoneyChanged;
     private float _currentCountMoney;
     private readonly IDisposable _subscriber;
@@ -12,6 +13,7 @@ public class Wallet : IDisposable
     {
         _subscriber = moneyCollectedSubscriber.Subscribe(AddMoney);
     }
+    
     private void AddMoney(MoneyCollectedMessage moneyCollected)
     {
         _currentCountMoney += moneyCollected.Money.CountMoney;
@@ -20,13 +22,17 @@ public class Wallet : IDisposable
 
     public bool TryBuy(float price)
     {
-        if (_currentCountMoney>=price)
+        if (_currentCountMoney >= price)
         {
             _currentCountMoney -= price;
             CountMoneyChanged?.Invoke(_currentCountMoney);
+            SoundsManager.Instance.PlayImprovementsSound();
+            
             return true;
         }
-        Debug.Log("Недостаточно денег");
+
+        OnNotEnoughMoney?.Invoke();
+        SoundsManager.Instance.PlayNotEnoughMoney();
         return false;
     }
 
