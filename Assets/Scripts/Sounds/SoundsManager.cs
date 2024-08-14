@@ -47,10 +47,6 @@ public class SoundsManager : MonoBehaviour
             {
                 SetNextMenuTrack();
             }
-            else
-            {
-                SetNextGameTrack();
-            }
         }
     }
 
@@ -86,6 +82,7 @@ public class SoundsManager : MonoBehaviour
         _currentGameIndex = Random.Range(0, _gameMusic.Length);
         _music.clip = _gameMusic[_currentGameIndex];
         _music.Play();
+        _music.loop = true;
     }
 
     public void PlayZombieAttack()
