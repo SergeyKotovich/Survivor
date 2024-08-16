@@ -7,7 +7,6 @@ public class DeathScreenController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _youDied;
     [SerializeField] private Button _restartButton;
-    [SerializeField] private Button _exitGame;
     [SerializeField] private Image _material;
     [SerializeField] private float _timeOffset = 0.5f;
     [SerializeField] private float _endValue = 1f;
@@ -22,7 +21,6 @@ public class DeathScreenController : MonoBehaviour
         {
             _scenesController = FindFirstObjectByType<ScenesController>();
             _restartButton.onClick.AddListener(_scenesController.RestartGame);
-            _exitGame.onClick.AddListener(_scenesController.ExitGame);
         }
     }
 
@@ -38,7 +36,6 @@ public class DeathScreenController : MonoBehaviour
             .OnComplete(() =>
             {
                 _restartButton.gameObject.SetActive(true);
-                _exitGame.gameObject.SetActive(true);
             });
     }
 }

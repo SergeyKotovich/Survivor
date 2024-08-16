@@ -17,13 +17,14 @@ public class UIController : MonoBehaviour
     private void Construct(Wallet wallet, PlayerController playerController,
         ISubscriber<EnemyDiedMessage> enemyDiedSubscriber,
         ISubscriber<AllEnemiesDiedMessage> allEnemyDiedSubscriber,
-        IPublisher<BreakFinishedMessage> breakFinishedPublisher)
+        IPublisher<BreakFinishedMessage> breakFinishedPublisher,
+        ISubscriber<PlayerDiedMessage> playerDiedSubscriber)
     {
         _wallet = wallet;
         _walletView.Initialize(_wallet);
-        _enemyDeathCounter.Initialize(enemyDiedSubscriber);
-        _breakControllerView.Initialize(allEnemyDiedSubscriber,breakFinishedPublisher, _kateNpcView.ShowMessages);
-        _improvementControllerView.Initialize(playerController.ShootingController, 
+        _enemyDeathCounter.Initialize(enemyDiedSubscriber, playerDiedSubscriber);
+        _breakControllerView.Initialize(allEnemyDiedSubscriber, breakFinishedPublisher, _kateNpcView.ShowMessages);
+        _improvementControllerView.Initialize(playerController.ShootingController,
             playerController.MovementController,
             playerController.Torch);
     }

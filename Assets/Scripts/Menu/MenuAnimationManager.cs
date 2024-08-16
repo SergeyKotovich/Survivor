@@ -50,4 +50,16 @@ public class MenuAnimationManager : MonoBehaviour
     {
         menu.transform.DOMoveX(endValue, duration);
     }
+    //
+    [UsedImplicitly]
+    public void ShowLeaderboard()
+    {
+        Show(_leaderBoard, _mainMenuSettings.AverageValue, _mainMenuSettings.XPositionToShow, _mainMenuSettings.Duration);
+    }
+
+    [UsedImplicitly]
+    public void HideLeaderboard()
+    {
+        _leaderBoard.transform.DOMoveX(_mainMenuSettings.XPositionToHide, _mainMenuSettings.Duration);
+    }
 }

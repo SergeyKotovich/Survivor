@@ -17,7 +17,7 @@ MonoBehaviour:
   <Health>k__BackingField: 100
   <AttackSpeed>k__BackingField: 1.5
   <AttackRange>k__BackingField: 6
-  <BrightnessTorch>k__BackingField: 5
+  <BrightnessTorch>k__BackingField: 7
   <AttackImprovementStep>k__BackingField: 0.1
-  <BrightnessTorchImprovementStep>k__BackingField: 2
+  <BrightnessTorchImprovementStep>k__BackingField: 1
   <RunningSpeedImprovementStep>k__BackingField: 0.1
