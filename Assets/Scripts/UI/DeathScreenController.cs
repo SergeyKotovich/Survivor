@@ -12,7 +12,7 @@ public class DeathScreenController : MonoBehaviour
     [SerializeField] private float _endValue = 1f;
     [SerializeField] private float _duration = 1f;
     [SerializeField] private GameObject _rawImage;
-    [SerializeField] private GameObject _deathAnimation;
+    [SerializeField] private Light _light;
     private ScenesController _scenesController;
 
     private void Awake()
@@ -28,7 +28,7 @@ public class DeathScreenController : MonoBehaviour
     {
         gameObject.SetActive(true);
         _rawImage.SetActive(true);
-        _deathAnimation.SetActive(true);
+        _light.transform.rotation = new Quaternion(0,0,0,0);
         var sequence = DOTween.Sequence();
         sequence.Insert(_timeOffset, _material.DOFade(_endValue, _duration));
         sequence.Append(_youDied.DOFade(_endValue, _duration));

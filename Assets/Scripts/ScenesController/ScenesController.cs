@@ -40,14 +40,24 @@ public class ScenesController : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
+    
+   private async UniTask StartGameAsync()
+   {
+       var operation = SceneManager.LoadSceneAsync(GlobalConstants.GAME_SCENE_INDEX);
+       operation.allowSceneActivation = false; 
+       
+       float progress = 0f;
+       
+       while (operation.progress < 0.9f)
+       {
+           progress = Mathf.Lerp(progress, operation.progress, Time.deltaTime * 5);
+           OnProgressUpdate?.Invoke(progress);
+           await UniTask.Yield();
+       }
+       
+       OnProgressUpdate?.Invoke(1.0f);
+       operation.allowSceneActivation = true;
+   }
 
-    private async UniTask StartGameAsync()
-    {
-        var operation = SceneManager.LoadSceneAsync(GlobalConstants.GAME_SCENE_INDEX);
-        while (!operation.isDone)
-        {
-            OnProgressUpdate?.Invoke(operation.progress);
-            await UniTask.Yield();
-        }
-    }
+
 }

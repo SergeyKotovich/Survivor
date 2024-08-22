@@ -8,12 +8,13 @@ public class Leaderboard : MonoBehaviour
     private const string MAX_SCORE_KEY = "MaxScore";
     private const string NAME_LB = "Leaderboard";
     private int _maxScore;
-    private LeaderboardYG _leaderboardYg;
+    [SerializeField] private LeaderboardYG _leaderboardYg;
 
     private void Awake()
     {
-        _leaderboardYg = GetComponent<LeaderboardYG>();
         _maxScore = PlayerPrefs.GetInt(MAX_SCORE_KEY, 0);
+        _leaderboardYg.UpdateLB();
+        
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -33,7 +34,7 @@ public class Leaderboard : MonoBehaviour
             PlayerPrefs.Save();
             YandexGame.NewLeaderboardScores(NAME_LB, newScore);
             _leaderboardYg.NewScore(_maxScore);
-            _leaderboardYg.UpdateLB();
+            
         }
     }
 }

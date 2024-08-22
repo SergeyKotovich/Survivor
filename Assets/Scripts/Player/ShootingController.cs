@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class ShootingController : MonoBehaviour, IAtackImprovable
@@ -14,7 +15,7 @@ public class ShootingController : MonoBehaviour, IAtackImprovable
     private ITarget _targetController;
     private PlayerConfig _playerConfig;
 
-    private void Start()
+    public void Start()
     {
         AttackSpeedUpdated?.Invoke(_cooldownAfterShot, _cooldownAfterShot - _playerConfig.AttackImprovementStep);
         AttackRangeUpdated?.Invoke(_attackRange, _attackRange + _playerConfig.AttackImprovementStep);
